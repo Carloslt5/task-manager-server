@@ -1,8 +1,8 @@
-import express from "express";
-import todoRoutes from "./todo.routes";
+import express from 'express'
+import todoRoutes from './todo.routes'
 
-const router = express.Router();
+const router = express.Router()
 
-router.use("/", todoRoutes)
+router.use('/', todoRoutes)
 
-export default router;
+export default router

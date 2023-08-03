@@ -7,12 +7,12 @@ import routes from './routes'
 
 dotenv.config()
 
-const app = express();
+const app = express()
 
 config(app)
 
-app.use("/api", routes);
+app.use('/api', routes)
 
 errorHandling(app)
 
-export default app;
+export default app
