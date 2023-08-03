@@ -1,8 +1,10 @@
 import express from 'express'
 import todoRoutes from './todo.routes'
+import authRoutes from './auth.routes'
 
 const router = express.Router()
 
-router.use('/', todoRoutes)
+router.use('/todo', todoRoutes)
+router.use('/auth', authRoutes)
 
 export default router
