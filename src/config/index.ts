@@ -5,7 +5,6 @@ import cors from 'cors'
 
 const FRONTEND_URL = process.env.ORIGIN || "http://localhost:3000";
 
-// Middleware configuration
 export default (app: Express) => {
 
   app.set("trust proxy", 1);
