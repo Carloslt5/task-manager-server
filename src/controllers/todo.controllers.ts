@@ -21,17 +21,20 @@ const createdTodo: AsyncRequestHandler = async (req, res, next) => {
 }
 
 const updateTodo: AsyncRequestHandler = async (req, res, next) => {
+  const { id } = req.params
+
   try {
-    const todo = await ToDo.find()
+    const todo = await ToDo.findByIdAndUpdate(id, { $addToSet: { completed: !true } }, { new: true })
     res.status(200).json({ todo })
   } catch (error) {
     res.status(400).json({ success: false, error })
   }
 }
 const deleteTodo: AsyncRequestHandler = async (req, res, next) => {
+  const { id } = req.params
   try {
-    const todo = await ToDo.find()
-    res.status(200).json({ todo })
+    await ToDo.findByIdAndDelete(id)
+    res.status(204)
   } catch (error) {
     res.status(400).json({ success: false, error })
   }

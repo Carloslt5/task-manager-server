@@ -6,7 +6,7 @@ interface IToDo {
   owner: ObjectId
 }
 
-const todoSchema = new Schema<IToDo>(
+const todoSchema = new Schema(
   {
     title: {
       type: String,
@@ -27,6 +27,6 @@ const todoSchema = new Schema<IToDo>(
   }
 )
 
-const ToDo = model('ToDo', todoSchema)
+const ToDo = model<IToDo>('ToDo', todoSchema)
 
 export default ToDo

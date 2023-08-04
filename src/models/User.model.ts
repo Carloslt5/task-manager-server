@@ -6,7 +6,7 @@ interface IUser {
   password: string
 }
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -30,6 +30,6 @@ const userSchema = new Schema<IUser>(
   }
 )
 
-const User = model('User', userSchema)
+const User = model<IUser>('User', userSchema)
 
 export default User
