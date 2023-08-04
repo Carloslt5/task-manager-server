@@ -14,7 +14,8 @@ const todoSchema = new Schema<IToDo>(
       trim: true
     },
     completed: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     owner: {
       ref: 'User',
