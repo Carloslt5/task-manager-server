@@ -19,15 +19,27 @@ module.exports = {
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
+    "project": ["./**/tsconfig.json"],
     "sourceType": "module",
-    "project": "./tsconfig.json"
   },
-  "ignorePatterns": ['**/*.eslintrc.js'],
+  "ignorePatterns": [
+    "**/*.eslintrc.js"
+  ],
   "rules": {
-    "semi": [1, "never"],
+    "semi": [
+      1,
+      "never"
+    ],
     "no-multi-spaces": "error",
-    "quotes": [2, "single"],
-    "@typescript-eslint/no-misused-promises": [2, "error"]
-
+    "quotes": [
+      2,
+      "single"
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ]
   }
 }
