@@ -26,15 +26,9 @@ module.exports = {
     "**/*.eslintrc.js"
   ],
   "rules": {
-    "semi": [
-      1,
-      "never"
-    ],
+    "semi": [1, "never"],
     "no-multi-spaces": "error",
-    "quotes": [
-      2,
-      "single"
-    ],
+    "quotes": [2, "single"],
     "@typescript-eslint/no-misused-promises": [
       "error",
       {

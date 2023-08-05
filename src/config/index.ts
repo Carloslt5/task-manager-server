@@ -3,7 +3,7 @@ import logger from 'morgan'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
-const FRONTEND_URL = process.env.ORIGIN || 'http://localhost:3000'
+const FRONTEND_URL = process.env.ORIGIN ?? 'http://localhost:3000'
 
 export default (app: Express): void => {
   app.set('trust proxy', 1)

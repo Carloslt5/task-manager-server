@@ -1,11 +1,12 @@
 import dotenv from 'dotenv'
 import express from 'express'
-import './db'
 import config from './config'
 import errorHandling from './error-handling'
 import routes from './routes'
+// import './db'
 
 dotenv.config()
+require('./db')
 
 const app = express()
 
