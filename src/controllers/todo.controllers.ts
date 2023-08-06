@@ -32,11 +32,11 @@ const updateTodo: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 const deleteTodo: AsyncRequestHandler = async (req, res, next) => {
-  const { id } = req.params
+  const { _id } = req.params
 
   try {
-    await ToDo.findByIdAndDelete(id)
-    res.status(204)
+    await ToDo.findByIdAndDelete(_id)
+    res.status(204).json({ message: 'Todo deleted' })
   } catch (error) {
     res.status(400).json({ success: false, error })
   }
