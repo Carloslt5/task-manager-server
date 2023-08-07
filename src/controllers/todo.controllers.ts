@@ -1,5 +1,6 @@
 import ToDo from './../models/ToDo.model'
-import type { AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type UpdateCompleted } from './Types/UpdateCompleted.Type'
 
 const getAllTodos: AsyncRequestHandler = async (req, res, next) => {
   try {
@@ -22,10 +23,10 @@ const createdTodo: AsyncRequestHandler = async (req, res, next) => {
 }
 
 const updateTodo: AsyncRequestHandler = async (req, res, next) => {
-  const { _id, completed } = req.body
+  const { _id, completed } = req.body as UpdateCompleted
 
   try {
-    const todo = await ToDo.findByIdAndUpdate(_id, { $set: { completed: !(completed as boolean) } }, { new: true })
+    const todo = await ToDo.findByIdAndUpdate(_id, { $set: { completed: !completed } }, { new: true })
     res.status(200).json({ todo })
   } catch (error) {
     res.status(400).json({ success: false, error })
