@@ -1,6 +1,5 @@
-import jwt from 'jsonwebtoken'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { type RequestHandler } from 'express'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import User from '../models/User.model'
 
@@ -33,7 +32,7 @@ const login: AsyncRequestHandler = async (req, res, next) => {
     if (bcrypt.compareSync(password, foundUser.password)) {
       const { _id, firstName, lastName } = foundUser
 
-      const payload = { _id, firstName, lastName }
+      const payload: JwtPayload = { _id, firstName, lastName }
 
       const authToken = jwt.sign(
         payload,
@@ -50,8 +49,8 @@ const login: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const verify: RequestHandler = (req, res, next) => {
-  res.json('All good verify')
+const verify: AsyncRequestHandler = async (req, res, next) => {
+  res.status(200).json(req.payload)
 }
 
 export {

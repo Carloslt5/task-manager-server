@@ -2,10 +2,7 @@ import { type TokenGetter, expressjwt, type Request } from 'express-jwt'
 import { type Response } from 'express'
 
 export const isAuthenticated = expressjwt({
-  secret: () => {
-    console.log(process.env)
-    return process.env.TOKEN_SECRET as string
-  },
+  secret: () => process.env.TOKEN_SECRET as string,
   algorithms: ['HS256'],
   requestProperty: 'payload',
   getToken: getTokenFromHeaders as TokenGetter

@@ -1,3 +1,8 @@
-import { type Request, type Response, type NextFunction } from 'express'
+import { type Response, type NextFunction, type Request } from 'express'
+import { type JwtPayload } from 'jsonwebtoken'
 
-export type AsyncRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>
+interface CustomeRequest extends Request {
+  payload?: JwtPayload
+}
+
+export type AsyncRequestHandler = (req: CustomeRequest, res: Response, next: NextFunction) => Promise<void>
