@@ -12,7 +12,6 @@ dbInit()
 const app = express()
 
 config(app)
-
 app.use('/api', routes)
 
 errorHandling(app)

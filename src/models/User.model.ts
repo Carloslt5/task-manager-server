@@ -1,16 +1,22 @@
 import { Schema, model } from 'mongoose'
+import bcrypt from 'bcrypt'
 
 interface IUser {
-  name: string
+  firstName: string
+  lastName: string
   email: string
   password: string
 }
 
 const userSchema = new Schema(
   {
-    name: {
+    firstName: {
       type: String,
       required: [true, 'Name is required.'],
+      trim: true
+    },
+    lastName: {
+      type: String,
       trim: true
     },
     email: {
@@ -29,6 +35,15 @@ const userSchema = new Schema(
     timestamps: true
   }
 )
+
+userSchema.pre<IUser>('save', function (next) {
+  const saltRounds = 10
+  const salt = bcrypt.genSaltSync(saltRounds)
+  const hashedPassword = bcrypt.hashSync(this.password, salt)
+  this.password = hashedPassword
+
+  next()
+})
 
 const User = model<IUser>('User', userSchema)
 
