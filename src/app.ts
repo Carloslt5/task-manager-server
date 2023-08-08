@@ -6,7 +6,6 @@ import routes from './routes'
 import dbInit from './db'
 
 dotenv.config()
-
 dbInit()
 
 const app = express()
