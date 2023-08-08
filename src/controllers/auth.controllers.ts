@@ -1,5 +1,3 @@
-import jwt, { type JwtPayload } from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import User from '../models/User.model'
 
@@ -24,23 +22,14 @@ const login: AsyncRequestHandler = async (req, res, next) => {
   try {
     const foundUser = await User.findOne({ email })
 
-    if (foundUser == null) {
+    if (foundUser === null) {
       res.status(401).json({ errorMessages: ['User not found.'] })
       return
     }
 
-    if (bcrypt.compareSync(password, foundUser.password)) {
-      const { _id, firstName, lastName } = foundUser
-
-      const payload: JwtPayload = { _id, firstName, lastName }
-
-      const authToken = jwt.sign(
-        payload,
-        process.env.TOKEN_SECRET as string,
-        { algorithm: 'HS256', expiresIn: '6h' }
-      )
-
-      res.status(201).json({ authToken })
+    if (foundUser.validatePassword(password)) {
+      const authToken = foundUser.signToken()
+      res.status(200).json({ authToken })
     } else {
       res.status(401).json({ errorMessages: ['Unable to authenticate the user'] })
     }

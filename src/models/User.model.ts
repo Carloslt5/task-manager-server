@@ -1,11 +1,14 @@
 import { Schema, model } from 'mongoose'
 import bcrypt from 'bcrypt'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 
 interface IUser {
   firstName: string
   lastName: string
   email: string
   password: string
+  signToken: () => Promise<string>
+  validatePassword: (plainPassword: string) => boolean
 }
 
 const userSchema = new Schema(
@@ -44,6 +47,21 @@ userSchema.pre<IUser>('save', function (next) {
 
   next()
 })
+
+userSchema.methods.signToken = function () {
+  const { _id, firstName, lastName } = this
+  const payload: JwtPayload = { _id, firstName, lastName }
+  const authToken = jwt.sign(
+    payload,
+    process.env.TOKEN_SECRET as string,
+    { algorithm: 'HS256', expiresIn: '6h' }
+  )
+  return authToken
+}
+
+userSchema.methods.validatePassword = function (plainPassword: string) {
+  return bcrypt.compareSync(plainPassword, this.password)
+}
 
 const User = model<IUser>('User', userSchema)
 

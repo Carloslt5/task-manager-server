@@ -11,7 +11,7 @@ export const isAuthenticated = expressjwt({
 
 async function getTokenFromHeaders(req: Request, res: Response): Promise<string | null> {
   if (req.headers.authorization === undefined) {
-    return null
+    return ''
   }
 
   if (req.headers.authorization.split(' ')[0] === 'Bearer') {
@@ -19,5 +19,5 @@ async function getTokenFromHeaders(req: Request, res: Response): Promise<string 
     return token
   }
 
-  return null
+  return ''
 }
