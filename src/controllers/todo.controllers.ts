@@ -3,8 +3,9 @@ import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import { type UpdateCompleted } from './Types/UpdateCompleted.Type'
 
 const getAllTodos: AsyncRequestHandler = async (req, res, next) => {
+  const { _id } = req.payload
   try {
-    const todos = await ToDo.find()
+    const todos = await ToDo.find({ owner: _id })
     res.status(200).json(todos)
   } catch (error) {
     res.status(400).json({ success: false, error })

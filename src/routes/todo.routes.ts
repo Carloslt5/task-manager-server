@@ -4,9 +4,9 @@ import { isAuthenticated } from './../middlewares/verifyToken.middleware'
 
 const router = express.Router()
 
-router.get('/getAllTodos', getAllTodos)
+router.get('/getAllTodos', isAuthenticated, getAllTodos)
 router.post('/createdTodo', isAuthenticated, createdTodo)
-router.put('/updateTodo', updateTodo)
-router.delete('/deleteTodo/:_id', deleteTodo)
+router.put('/updateTodo', isAuthenticated, updateTodo)
+router.delete('/deleteTodo/:_id', isAuthenticated, deleteTodo)
 
 export default router
