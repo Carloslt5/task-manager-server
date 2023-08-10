@@ -8,7 +8,7 @@ const getAllTodos: AsyncRequestHandler = async (req, res, next) => {
     const todos = await ToDo.find({ owner: _id })
     res.status(200).json(todos)
   } catch (error) {
-    res.status(400).json({ success: false, error })
+    res.status(500).json({ success: false, error })
   }
 }
 
@@ -20,7 +20,7 @@ const createdTodo: AsyncRequestHandler = async (req, res, next) => {
     const todo = await ToDo.create({ title, owner: _id })
     res.status(200).json({ todo })
   } catch (error) {
-    res.status(400).json({ success: false, error })
+    res.status(500).json({ success: false, error })
   }
 }
 
@@ -31,7 +31,7 @@ const updateTodo: AsyncRequestHandler = async (req, res, next) => {
     const todo = await ToDo.findByIdAndUpdate(_id, { $set: { completed: !completed } }, { new: true })
     res.status(200).json({ todo })
   } catch (error) {
-    res.status(400).json({ success: false, error })
+    res.status(500).json({ success: false, error })
   }
 }
 
@@ -42,7 +42,7 @@ const deleteTodo: AsyncRequestHandler = async (req, res, next) => {
     await ToDo.findByIdAndDelete(_id)
     res.status(204).json({ message: 'Todo deleted' })
   } catch (error) {
-    res.status(400).json({ success: false, error })
+    res.status(500).json({ success: false, error })
   }
 }
 
