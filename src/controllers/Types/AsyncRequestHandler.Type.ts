@@ -1,8 +1,8 @@
 import { type Response, type NextFunction, type Request } from 'express'
-import { type JwtPayload } from 'jsonwebtoken'
+import { type ReqPayload } from '../../models/User.model'
 
 interface CustomeRequest extends Request {
-  payload?: JwtPayload
+  payload?: ReqPayload
 }
 
 export type AsyncRequestHandler = (req: CustomeRequest, res: Response, next: NextFunction) => Promise<void>

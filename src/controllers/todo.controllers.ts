@@ -13,9 +13,10 @@ const getAllTodos: AsyncRequestHandler = async (req, res, next) => {
 
 const createdTodo: AsyncRequestHandler = async (req, res, next) => {
   const { title } = req.body
+  const { _id } = req.payload
 
   try {
-    const todo = await ToDo.create({ title })
+    const todo = await ToDo.create({ title, owner: _id })
     res.status(200).json({ todo })
   } catch (error) {
     res.status(400).json({ success: false, error })
