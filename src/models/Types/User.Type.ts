@@ -5,4 +5,5 @@ export interface IUser {
   password: string
   signToken: () => Promise<string>
   validatePassword: (plainPassword: string) => boolean
+  // checkOwnerForUser: (userId: string, profileId: string) => Promise<void>
 }

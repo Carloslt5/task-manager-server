@@ -26,7 +26,6 @@ const todoSchema = new Schema(
     timestamps: true
   }
 )
-
 const ToDo = model<IToDo>('ToDo', todoSchema)
 
 export default ToDo

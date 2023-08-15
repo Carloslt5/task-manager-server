@@ -1,8 +1,12 @@
-import { Schema, model } from 'mongoose'
+import { Schema, type Model, model } from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { type ReqPayload } from './Types/ReqPayload.Type'
 import { type IUser } from './Types/User.Type'
+
+interface IUserModel extends Model<IUser> {
+  checkOwnerForUser: (userId: string, profileId: string) => Promise<number>
+}
 
 const userSchema = new Schema(
   {
@@ -55,6 +59,11 @@ userSchema.methods.validatePassword = function (plainPassword: string) {
   return bcrypt.compareSync(plainPassword, this.password)
 }
 
-const User = model<IUser>('User', userSchema)
+userSchema.statics.checkOwnerForUser = async function (userId: string, profileId: string): Promise<number> {
+  console.log('DOOO SOMETHING------------->')
+  return this.countDocuments({ $and: [{ _id: userId }, { _id: profileId }] })
+}
+
+const User = model<IUser, IUserModel>('User', userSchema)
 
 export default User
