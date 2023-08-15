@@ -7,7 +7,6 @@ const checkUserOwner: AsyncRequestHandler = async (req, res, next) => {
     const checkOuner = await ToDo.find({ owner: userId })
 
     if (checkOuner.length > 0) {
-      console.log(checkOuner)
       next()
     } else {
       res.status(401).json({ errorMessages: ['No eres el dueño de este perfil'] })
