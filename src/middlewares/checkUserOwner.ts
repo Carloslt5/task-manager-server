@@ -1,14 +1,13 @@
-import User from '../models/User.model'
 import { type AsyncRequestHandler } from '../controllers/Types/AsyncRequestHandler.Type'
+import ToDo from '../models/ToDo.model'
 
 const checkUserOwner: AsyncRequestHandler = async (req, res, next) => {
   try {
     const { _id: userId } = req.payload
-    const { id: profileId } = req.params
+    const checkOuner = await ToDo.find({ owner: userId })
 
-    const count = await User.checkOwnerForUser(userId, profileId)
-
-    if (count === 0) {
+    if (checkOuner.length > 0) {
+      console.log(checkOuner)
       next()
     } else {
       res.status(401).json({ errorMessages: ['No eres el dueño de este perfil'] })
