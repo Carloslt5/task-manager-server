@@ -1,6 +1,6 @@
 import { type ObjectId, Schema, model } from 'mongoose'
 
-interface IToDo {
+export interface IToDo {
   title: string
   completed: boolean
   owner: ObjectId
