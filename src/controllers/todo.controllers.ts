@@ -46,9 +46,21 @@ const deleteTodo: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
+const deleteCompletedTodos: AsyncRequestHandler = async (req, res, next) => {
+  const { _id } = req.payload
+
+  try {
+    await ToDo.deleteMany({ owner: _id, completed: true })
+    res.status(204).json({ message: 'Completed todos deleted' })
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
+
 export {
   getAllTodos,
   createdTodo,
   updateTodo,
-  deleteTodo
+  deleteTodo,
+  deleteCompletedTodos
 }
