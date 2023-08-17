@@ -3,7 +3,6 @@ import { type ObjectId, Schema, model } from 'mongoose'
 export interface IToDo {
   title: string
   completed: boolean
-  archived: boolean
   owner: ObjectId
 }
 
@@ -15,10 +14,6 @@ const todoSchema = new Schema(
       trim: true
     },
     completed: {
-      type: Boolean,
-      default: false
-    },
-    archived: {
       type: Boolean,
       default: false
     },

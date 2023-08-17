@@ -14,10 +14,6 @@ const boardschema = new Schema(
       required: [true, 'Title is required.'],
       trim: true
     },
-    cards: [{
-      ref: 'KanbanCard',
-      type: Schema.Types.ObjectId
-    }],
     participants: [{
       ref: 'User',
       type: Schema.Types.ObjectId
