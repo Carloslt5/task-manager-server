@@ -40,7 +40,7 @@ const deleteTodo: AsyncRequestHandler = async (req, res, next) => {
 
   try {
     await ToDo.findByIdAndDelete(_id)
-    res.status(204).json({ message: 'Todo deleted' })
+    res.status(200).json({ message: 'Todo deleted' })
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
@@ -51,7 +51,7 @@ const deleteCompletedTodos: AsyncRequestHandler = async (req, res, next) => {
 
   try {
     await ToDo.deleteMany({ owner: _id, completed: true })
-    res.status(204).json({ message: 'Completed todos deleted' })
+    res.status(200).json({ message: 'Completed todos deleted' })
   } catch (error) {
     res.status(500).json({ success: false, error })
   }

@@ -3,6 +3,7 @@ import { Schema, model, type ObjectId } from 'mongoose'
 export interface IBoard {
   title: string
   cards: ObjectId[]
+  members: ObjectId
   owner: ObjectId
 }
 
@@ -14,7 +15,11 @@ const boardschema = new Schema(
       trim: true
     },
     cards: [{
-      ref: 'CanvasCard',
+      ref: 'KanbanCard',
+      type: Schema.Types.ObjectId
+    }],
+    members: [{
+      ref: 'User',
       type: Schema.Types.ObjectId
     }],
     owner: {

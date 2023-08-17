@@ -25,11 +25,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: [true, 'Password is required.']
-    },
-    boards: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Board'
-    }]
+    }
   },
   {
     timestamps: true
