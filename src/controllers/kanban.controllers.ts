@@ -25,14 +25,25 @@ const createKanbanCards: AsyncRequestHandler = async (req, res, next) => {
 }
 
 const updateKanbanCards: AsyncRequestHandler = async (req, res, next) => {
-  console.log('estoy ene ste endpoint updateKanbanCards')
+  interface databody {
+    archivedValue: boolean
+  }
+  const { kanbanCardId } = req.params
+  const { archivedValue } = req.body as databody
+
+  try {
+    const kanbanCardUpdated = await KanbanCard.findByIdAndUpdate(kanbanCardId, { $set: { archived: !archivedValue } }, { new: true })
+    res.status(200).json({ kanbanCardUpdated })
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
 }
 
 const deleteKanbanCards: AsyncRequestHandler = async (req, res, next) => {
-  const { boardId, kanbanCardId } = req.params
+  const { kanbanCardId } = req.params
 
   try {
-    await KanbanCard.findOneAndRemove({ $and: [{ boardId }, { _id: kanbanCardId }] })
+    await KanbanCard.findOneAndRemove({ _id: kanbanCardId })
     res.status(200).json({ message: 'Kanban Card is deleted' })
   } catch (error) {
     res.status(500).json({ success: false, error })

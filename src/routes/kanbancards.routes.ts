@@ -4,7 +4,7 @@ const router = express.Router()
 
 router.get('/:boardId/getKanbanCards', getKanbanCards)
 router.post('/:boardId/createKanbanCards', createKanbanCards)
-router.put('/:boardId/updateKanbanCards', updateKanbanCards)
-router.delete('/:boardId/deleteKanbanCards/:kanbanCardId', deleteKanbanCards)
+router.put('/updateKanbanCards/:kanbanCardId', updateKanbanCards)
+router.delete('/deleteKanbanCards/:kanbanCardId', deleteKanbanCards)
 
 export default router
