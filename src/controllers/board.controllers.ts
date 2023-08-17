@@ -6,7 +6,7 @@ const getAllBoards: AsyncRequestHandler = async (req, res, next) => {
 
   try {
     const boards = await Board.find({ owner: _id })
-    res.status(200).json({ boards })
+    res.status(200).json(boards)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }

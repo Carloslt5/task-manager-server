@@ -25,14 +25,14 @@ const createKanbanCards: AsyncRequestHandler = async (req, res, next) => {
 }
 
 const updateKanbanCards: AsyncRequestHandler = async (req, res, next) => {
-  interface databody {
+  interface UpdateArchived {
     archivedValue: boolean
   }
   const { kanbanCardId } = req.params
-  const { archivedValue } = req.body as databody
+  const { archivedValue } = req.body as UpdateArchived
 
   try {
-    const kanbanCardUpdated = await KanbanCard.findByIdAndUpdate(kanbanCardId, { $set: { archived: !archivedValue } }, { new: true })
+    const kanbanCardUpdated = await KanbanCard.findByIdAndUpdate({ _id: kanbanCardId }, { $set: { archived: !archivedValue } }, { new: true })
     res.status(200).json({ kanbanCardUpdated })
   } catch (error) {
     res.status(500).json({ success: false, error })
