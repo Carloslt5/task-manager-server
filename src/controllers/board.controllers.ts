@@ -34,8 +34,15 @@ const updateBoard: AsyncRequestHandler = async (req, res, next) => {
     res.status(500).json({ success: false, error })
   }
 }
-const addMembers: AsyncRequestHandler = async (req, res, next) => {
-  res.json('añadiendo un participante')
+const addParticipants: AsyncRequestHandler = async (req, res, next) => {
+  const { _id, participants } = req.body
+
+  try {
+    const boardUpdated = await Board.findByIdAndUpdate(_id, { $addToSet: { participants } }, { new: true })
+    res.status(200).json({ boardUpdated })
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
 }
 
 const deleteBoard: AsyncRequestHandler = async (req, res, next) => {
@@ -51,6 +58,6 @@ export {
   getAllBoards,
   createBoard,
   updateBoard,
-  addMembers,
+  addParticipants,
   deleteBoard
 }

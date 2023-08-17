@@ -18,7 +18,7 @@ const boardschema = new Schema(
       ref: 'KanbanCard',
       type: Schema.Types.ObjectId
     }],
-    members: [{
+    participants: [{
       ref: 'User',
       type: Schema.Types.ObjectId
     }],
