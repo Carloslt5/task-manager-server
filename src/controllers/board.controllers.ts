@@ -1,4 +1,4 @@
-import Board from '../models/Board.model'
+import Board from '../models/Project.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getAllBoards: AsyncRequestHandler = async (req, res, next) => {

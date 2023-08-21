@@ -4,27 +4,24 @@ export interface IKanbanCard {
   boardId: ObjectId[]
   title: string
   order: number
-  task: ObjectId[]
+  project: ObjectId[]
   archived: boolean
 }
 
-const kanbancardschema = new Schema(
+const kanbanboardschema = new Schema(
   {
     boardId: {
-      ref: 'Board',
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId,
+      ref: 'Board'
     },
     title: {
       type: String,
       required: [true, 'Title is required.'],
       trim: true
     },
-    order: {
-      type: Number
-    },
-    task: [{
-      ref: 'ToDo',
-      type: Schema.Types.ObjectId
+    project: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Project'
     }],
     archived: {
       type: Boolean,
@@ -33,6 +30,6 @@ const kanbancardschema = new Schema(
   }
 )
 
-const KanbanCard = model<IKanbanCard>('KanbanCard', kanbancardschema)
+const Kanbanboard = model('Kanbanboard', kanbanboardschema)
 
-export default KanbanCard
+export default Kanbanboard

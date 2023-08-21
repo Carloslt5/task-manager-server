@@ -1,23 +1,22 @@
 import { Schema, model, type ObjectId } from 'mongoose'
 
-export interface IBoard {
+export interface IProject {
   title: string
-  cards: ObjectId[]
-  members: ObjectId
+  description: string
   owner: ObjectId
 }
 
-const boardschema = new Schema(
+const projectschema = new Schema(
   {
     title: {
       type: String,
       required: [true, 'Title is required.'],
       trim: true
     },
-    participants: [{
-      ref: 'User',
-      type: Schema.Types.ObjectId
-    }],
+    description: {
+      type: String,
+      trim: true
+    },
     owner: {
       ref: 'User',
       type: Schema.Types.ObjectId
@@ -25,6 +24,6 @@ const boardschema = new Schema(
   }
 )
 
-const Board = model<IBoard>('Board', boardschema)
+const Project = model<IProject>('Project', projectschema)
 
-export default Board
+export default Project

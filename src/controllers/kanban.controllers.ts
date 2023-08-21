@@ -1,4 +1,4 @@
-import KanbanCard from '../models/KanbanCard.model'
+import KanbanCard from '../models/KanbanBoard.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getKanbanCards: AsyncRequestHandler = async (req, res, next) => {
