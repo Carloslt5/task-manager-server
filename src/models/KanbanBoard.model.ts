@@ -1,6 +1,6 @@
 import { Schema, model, type ObjectId } from 'mongoose'
 
-export interface IKanbanCard {
+export interface IKanbanBoard {
   boardId: ObjectId[]
   title: string
   order: number
@@ -10,10 +10,6 @@ export interface IKanbanCard {
 
 const kanbanboardschema = new Schema(
   {
-    boardId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Board'
-    },
     title: {
       type: String,
       required: [true, 'Title is required.'],
@@ -26,10 +22,14 @@ const kanbanboardschema = new Schema(
     archived: {
       type: Boolean,
       default: false
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
     }
   }
 )
 
-const Kanbanboard = model('Kanbanboard', kanbanboardschema)
+const Kanbanboard = model<IKanbanBoard>('Kanbanboard', kanbanboardschema)
 
 export default Kanbanboard

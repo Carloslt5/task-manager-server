@@ -1,6 +1,7 @@
 import express from 'express'
-import { getAllProject, createProject, updateProject, deleteProject } from '../controllers/board.controllers'
 import { isAuthenticated } from '../middlewares/verifyToken.middleware'
+import { getAllProject, createProject, updateProject, deleteProject } from '../controllers/board.controllers'
+
 const router = express.Router()
 
 router.get('/getAllProject', isAuthenticated, getAllProject)

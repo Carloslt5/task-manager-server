@@ -1,49 +1,72 @@
-import KanbanCard from '../models/KanbanBoard.model'
+import KanbanBoard from '../models/KanbanBoard.model'
+import Project from '../models/Project.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-const getKanbanCards: AsyncRequestHandler = async (req, res, next) => {
-  const { boardId } = req.params
+const getKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+  const { _id } = req.payload
   try {
-    const kanbanCards = await KanbanCard.find({ boardId }).sort('order')
-    res.status(200).json(kanbanCards)
+    const kanbanBoards = await KanbanBoard.find({ owner: _id })
+    res.status(200).json(kanbanBoards)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
 }
 
-const createKanbanCards: AsyncRequestHandler = async (req, res, next) => {
-  const { boardId } = req.params
+const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+  const { _id } = req.payload
   const { title } = req.body
 
   try {
-    const newOrder = ((await KanbanCard.find({ boardId })).length + 1)
-    const kanbanCard = await KanbanCard.create({ boardId, title, order: newOrder })
-    res.status(200).json(kanbanCard)
+    const kanbanboard = await KanbanBoard.create({ title, owner: _id })
+    res.status(200).json(kanbanboard)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
 }
 
-const updateKanbanCards: AsyncRequestHandler = async (req, res, next) => {
+const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   interface UpdateArchived {
+    title: string
     archivedValue: boolean
   }
-  const { kanbanCardId } = req.params
-  const { archivedValue } = req.body as UpdateArchived
+
+  const { KanbanBoardId } = req.params
+  const { title, archivedValue } = req.body as UpdateArchived
 
   try {
-    const kanbanCardUpdated = await KanbanCard.findByIdAndUpdate({ _id: kanbanCardId }, { $set: { archived: !archivedValue } }, { new: true })
+    const kanbanCardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title, archived: !archivedValue } }, { new: true })
     res.status(200).json({ kanbanCardUpdated })
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
 }
 
-const deleteKanbanCards: AsyncRequestHandler = async (req, res, next) => {
-  const { kanbanCardId } = req.params
+const addProjectToKanban: AsyncRequestHandler = async (req, res, next) => {
+  const { KanbanBoardId } = req.params
+  const { projectId } = req.body
 
   try {
-    await KanbanCard.findOneAndRemove({ _id: kanbanCardId })
+    const [project, kanbanBoardUpdated] = await Promise.all([
+      Project.findById(projectId),
+      KanbanBoard.findByIdAndUpdate(KanbanBoardId, { $addToSet: { project: projectId } }, { new: true })
+    ])
+    if (project === null) {
+      res.status(500).json({ message: 'Project not found' })
+    }
+    if (kanbanBoardUpdated === null) {
+      res.status(500).json({ message: 'Kanban Board not found' })
+    }
+    res.status(200).json(kanbanBoardUpdated)
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
+
+const deleteKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+  const { KanbanBoardId } = req.params
+
+  try {
+    await KanbanBoard.findOneAndRemove({ _id: KanbanBoardId })
     res.status(200).json({ message: 'Kanban Card is deleted' })
   } catch (error) {
     res.status(500).json({ success: false, error })
@@ -51,8 +74,9 @@ const deleteKanbanCards: AsyncRequestHandler = async (req, res, next) => {
 }
 
 export {
-  getKanbanCards,
-  createKanbanCards,
-  updateKanbanCards,
-  deleteKanbanCards
+  getKanbanBoard,
+  createKanbanBoard,
+  updateKanbanBoard,
+  addProjectToKanban,
+  deleteKanbanBoard
 }
