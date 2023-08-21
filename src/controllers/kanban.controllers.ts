@@ -18,6 +18,9 @@ const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
 
   try {
     const kanbanboard = await KanbanBoard.create({ title, owner: _id })
+    if (kanbanboard === null) {
+      res.status(500).json({ message: 'Error can not Create' })
+    }
     res.status(200).json(kanbanboard)
   } catch (error) {
     res.status(500).json({ success: false, error })
@@ -35,7 +38,10 @@ const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
 
   try {
     const kanbanCardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title, archived: !archivedValue } }, { new: true })
-    res.status(200).json({ kanbanCardUpdated })
+    if (kanbanCardUpdated === null) {
+      res.status(500).json({ message: 'Error can not Update' })
+    }
+    res.status(200).json(kanbanCardUpdated)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
@@ -66,7 +72,10 @@ const deleteKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const { KanbanBoardId } = req.params
 
   try {
-    await KanbanBoard.findOneAndRemove({ _id: KanbanBoardId })
+    const kanbanBoard = await KanbanBoard.findOneAndRemove({ _id: KanbanBoardId })
+    if (kanbanBoard === null) {
+      res.status(500).json({ message: 'Kanban Board not found' })
+    }
     res.status(200).json({ message: 'Kanban Card is deleted' })
   } catch (error) {
     res.status(500).json({ success: false, error })
