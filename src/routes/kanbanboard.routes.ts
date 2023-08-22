@@ -1,6 +1,7 @@
 import express from 'express'
-import { getKanbanBoard, createKanbanBoard, updateKanbanBoard, addProjectToKanban, deleteKanbanBoard } from '../controllers/kanban.controllers'
 import { isAuthenticated } from '../middlewares/verifyToken.middleware'
+import { getKanbanBoard, createKanbanBoard, updateKanbanBoard, addProjectToKanban, deleteKanbanBoard } from '../controllers/kanban.controllers'
+
 const router = express.Router()
 
 router.get('/getKanbanBoard', isAuthenticated, getKanbanBoard)

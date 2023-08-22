@@ -1,7 +1,7 @@
 import express from 'express'
-import { getAllTodos, createdTodo, updateTodo, deleteTodo, deleteCompletedTodos } from './../controllers/todo.controllers'
 import { isAuthenticated } from './../middlewares/verifyToken.middleware'
 import { checkUserOwner } from './../middlewares/checkUserOwner'
+import { getAllTodos, createdTodo, updateTodo, deleteTodo, deleteCompletedTodos } from './../controllers/todo.controllers'
 
 const router = express.Router()
 
