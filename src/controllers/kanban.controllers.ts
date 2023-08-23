@@ -12,6 +12,17 @@ const getKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
+const getOneKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+  const { kanbanBoardId } = req.params
+
+  try {
+    const kanbanBoard = await KanbanBoard.findById(kanbanBoardId).populate('project')
+    res.status(200).json(kanbanBoard)
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
+
 const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const { _id } = req.payload
   const { title } = req.body
@@ -29,19 +40,18 @@ const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
 
 const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   interface UpdateArchived {
-    title: string
-    archivedValue: boolean
+    title?: string
+    completedValue?: boolean
   }
-
   const { KanbanBoardId } = req.params
-  const { title, archivedValue } = req.body as UpdateArchived
+  const { title } = req.body as UpdateArchived
 
   try {
-    const kanbanCardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title, archived: !archivedValue } }, { new: true })
-    if (kanbanCardUpdated === null) {
+    const kanbanBoardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title } }, { new: true })
+    if (kanbanBoardUpdated === null) {
       res.status(500).json({ message: 'Error can not Update' })
     }
-    res.status(200).json(kanbanCardUpdated)
+    res.status(200).json(kanbanBoardUpdated)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
@@ -84,6 +94,7 @@ const deleteKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
 
 export {
   getKanbanBoard,
+  getOneKanbanBoard,
   createKanbanBoard,
   updateKanbanBoard,
   addProjectToKanban,

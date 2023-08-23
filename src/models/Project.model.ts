@@ -18,8 +18,8 @@ const projectschema = new Schema(
       trim: true
     },
     owner: {
-      ref: 'User',
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId,
+      ref: 'User'
     }
   }
 )

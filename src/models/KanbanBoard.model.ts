@@ -19,7 +19,7 @@ const kanbanboardschema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Project'
     }],
-    archived: {
+    completed: {
       type: Boolean,
       default: false
     },

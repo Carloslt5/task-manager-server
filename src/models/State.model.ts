@@ -15,7 +15,10 @@ const stateSchema = new Schema(
     project: [{
       ref: 'Project',
       type: Schema.Types.ObjectId
-    }]
+    }],
+    order: {
+      type: Number
+    }
   },
   {
     timestamps: true
