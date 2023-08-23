@@ -5,7 +5,7 @@ import { getAllProject, createProject, updateProject, deleteProject } from '../c
 const router = express.Router()
 
 router.get('/getAllProject', isAuthenticated, getAllProject)
-router.post('/createProject', isAuthenticated, createProject)
+router.post('/createProject/:kanbanBoardId', isAuthenticated, createProject)
 router.put('/updateProject', isAuthenticated, updateProject)
 router.delete('/deleteProject/:projectId', isAuthenticated, deleteProject)
 

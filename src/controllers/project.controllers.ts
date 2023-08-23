@@ -1,3 +1,4 @@
+import Kanbanboard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
@@ -14,11 +15,13 @@ const getAllProject: AsyncRequestHandler = async (req, res, next) => {
 
 const createProject: AsyncRequestHandler = async (req, res, next) => {
   const { _id } = req.payload
+  const { kanbanBoardId } = req.params
   const { title, description } = req.body
 
   try {
-    const project = await Project.create({ title, description, owner: _id })
-    res.status(200).json({ project })
+    const createProject = await Project.create({ title, description, owner: _id })
+    const kanbanBoard = await Kanbanboard.findByIdAndUpdate(kanbanBoardId, { $push: { project: createProject } }, { new: true })
+    res.status(200).json({ createProject, kanbanBoard })
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
