@@ -5,7 +5,7 @@ import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 const getKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const { _id } = req.payload
   try {
-    const kanbanBoards = await KanbanBoard.find({ owner: _id })
+    const kanbanBoards = await KanbanBoard.find({ owner: _id }).populate('project')
     res.status(200).json(kanbanBoards)
   } catch (error) {
     res.status(500).json({ success: false, error })

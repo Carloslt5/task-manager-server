@@ -7,7 +7,7 @@ export interface IState {
 
 const stateSchema = new Schema(
   {
-    name: {
+    stateName: {
       type: String,
       required: [true, 'Title is required'],
       trim: true
