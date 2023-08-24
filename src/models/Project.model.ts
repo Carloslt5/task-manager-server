@@ -11,12 +11,17 @@ const projectschema = new Schema(
     title: {
       type: String,
       required: [true, 'Title is required.'],
-      trim: true
+      trim: true,
+      unique: true
     },
     description: {
       type: String,
       trim: true
     },
+    states: [{
+      type: Schema.Types.ObjectId,
+      ref: 'State'
+    }],
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User'

@@ -10,13 +10,8 @@ const stateSchema = new Schema(
     stateName: {
       type: String,
       required: [true, 'Title is required'],
-      trim: true,
-      unique: true
+      trim: true
     },
-    project: [{
-      ref: 'Project',
-      type: Schema.Types.ObjectId
-    }],
     order: {
       type: Number
     }
