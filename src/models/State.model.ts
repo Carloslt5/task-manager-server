@@ -9,12 +9,13 @@ const stateSchema = new Schema(
   {
     stateName: {
       type: String,
-      required: [true, 'Title is required'],
+      required: [true, 'Name is required'],
       trim: true
     },
-    order: {
-      type: Number
-    }
+    ticket: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Task'
+    }]
   },
   {
     timestamps: true

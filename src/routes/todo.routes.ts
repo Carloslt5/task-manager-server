@@ -6,7 +6,7 @@ import { getAllTodos, createdTodo, updateTodo, deleteTodo, deleteCompletedTodos 
 const router = express.Router()
 
 router.get('/getAllTodos', isAuthenticated, checkUserOwner, getAllTodos)
-router.post('/createdTodo', isAuthenticated, checkUserOwner, createdTodo)
+router.post('/createdTodo', isAuthenticated, createdTodo)
 router.put('/updateTodo', isAuthenticated, checkUserOwner, updateTodo)
 router.delete('/deleteTodo/:_id', isAuthenticated, checkUserOwner, deleteTodo)
 router.delete('/deleteCompletedTodos', isAuthenticated, checkUserOwner, deleteCompletedTodos)

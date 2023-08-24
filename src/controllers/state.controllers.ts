@@ -1,3 +1,4 @@
+import Project from '../models/Project.model'
 import State from '../models/State.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
@@ -17,15 +18,9 @@ const createState: AsyncRequestHandler = async (req, res, next) => {
   const { stateName } = req.body
 
   try {
-    const checkState = await State.findOne({ stateName })
-    if (checkState == null) {
-      const newOrder = (await State.find()).length + 1
-      const createdStates = await State.create({ stateName, order: newOrder, project: projectId })
-      res.status(200).json(createdStates)
-    } else {
-      const updateState = await State.findOneAndUpdate({ stateName }, { $addToSet: { project: projectId } }, { new: true })
-      res.status(200).json(updateState)
-    }
+    const createdStates = await State.create({ stateName })
+    const updateProject = await Project.findByIdAndUpdate(projectId, { $addToSet: { state: createdStates } }, { new: true })
+    res.status(200).json(updateProject)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }

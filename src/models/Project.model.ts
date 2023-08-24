@@ -18,7 +18,7 @@ const projectschema = new Schema(
       type: String,
       trim: true
     },
-    states: [{
+    state: [{
       type: Schema.Types.ObjectId,
       ref: 'State'
     }],
