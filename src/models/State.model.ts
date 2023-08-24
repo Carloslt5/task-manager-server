@@ -10,7 +10,8 @@ const stateSchema = new Schema(
     stateName: {
       type: String,
       required: [true, 'Title is required'],
-      trim: true
+      trim: true,
+      unique: true
     },
     project: [{
       ref: 'Project',
