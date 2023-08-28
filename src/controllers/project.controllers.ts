@@ -12,6 +12,16 @@ const getAllProject: AsyncRequestHandler = async (req, res, next) => {
     res.status(500).json({ success: false, error })
   }
 }
+const getOneProject: AsyncRequestHandler = async (req, res, next) => {
+  const { projectId } = req.params
+
+  try {
+    const project = await Project.findById(projectId).populate('state')
+    res.status(200).json(project)
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
 
 const createProject: AsyncRequestHandler = async (req, res, next) => {
   const { _id } = req.payload
@@ -50,6 +60,7 @@ const deleteProject: AsyncRequestHandler = async (req, res, next) => {
 }
 export {
   getAllProject,
+  getOneProject,
   createProject,
   updateProject,
   deleteProject
