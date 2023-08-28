@@ -4,7 +4,6 @@ import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getAllProject: AsyncRequestHandler = async (req, res, next) => {
   const { _id } = req.payload
-
   try {
     const projects = await Project.find({ owner: _id })
     res.status(200).json(projects)

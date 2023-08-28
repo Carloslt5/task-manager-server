@@ -1,8 +1,8 @@
 import { type ObjectId, Schema, model } from 'mongoose'
 
 export interface IState {
-  name: string
-  project: ObjectId
+  stateName: string
+  ticket: ObjectId[]
 }
 
 const stateSchema = new Schema(

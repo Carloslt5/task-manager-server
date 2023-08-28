@@ -4,9 +4,9 @@ import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getStates: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
-
   try {
     const states = await State.find({ project: projectId }).populate('project')
+    console.log('esto', states)
     res.status(200).json(states)
   } catch (error) {
     res.status(500).json({ success: false, error })
