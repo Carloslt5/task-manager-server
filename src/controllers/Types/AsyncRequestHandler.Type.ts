@@ -1,8 +1,13 @@
 import { type Response, type NextFunction, type Request } from 'express'
-import { type ReqPayload } from '../../models/User.model'
 
-interface CustomeRequest extends Request {
+export interface ReqPayload {
+  _id: string
+  firstName: string
+  lastName: string
+}
+
+export interface CustomRequest extends Request {
   payload?: ReqPayload
 }
 
-export type AsyncRequestHandler = (req: CustomeRequest, res: Response, next: NextFunction) => Promise<void>
+export type AsyncRequestHandler = (req: CustomRequest, res: Response, next: NextFunction) => Promise<void>

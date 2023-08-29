@@ -1,8 +1,21 @@
 import { Schema, model } from 'mongoose'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import { type ReqPayload } from './Types/ReqPayload.Type'
-import { type IUser } from './Types/User.Type'
+import jwt, { type Secret } from 'jsonwebtoken'
+
+export interface IUser {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  signToken: () => Promise<string>
+  validatePassword: (plainPassword: string) => boolean
+}
+
+export interface ReqPayload {
+  _id: string
+  firstName: string
+  lastName: string
+}
 
 const userSchema = new Schema(
   {
@@ -39,20 +52,19 @@ userSchema.pre<IUser>('save', function (next) {
   this.password = hashedPassword
   next()
 })
+userSchema.methods.validatePassword = function (plainPassword: string) {
+  return bcrypt.compareSync(plainPassword, this.password)
+}
 
 userSchema.methods.signToken = function () {
   const { _id, firstName, lastName } = this
-  const payload: ReqPayload = { _id, firstName, lastName }
-  const authToken = jwt.sign(
+  const payload = { _id, firstName, lastName }
+  const authToken: string = jwt.sign(
     payload,
-    process.env.TOKEN_SECRET as string,
+    process.env.TOKEN_SECRET as Secret,
     { algorithm: 'HS256', expiresIn: '6h' }
   )
   return authToken
-}
-
-userSchema.methods.validatePassword = function (plainPassword: string) {
-  return bcrypt.compareSync(plainPassword, this.password)
 }
 
 const User = model<IUser>('User', userSchema)

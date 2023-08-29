@@ -1,9 +1,10 @@
-import { type AsyncRequestHandler } from '../controllers/Types/AsyncRequestHandler.Type'
+import { type NextFunction, type Response } from 'express'
 import ToDo from '../models/ToDo.model'
+import { type CustomRequest } from '../controllers/Types/AsyncRequestHandler.Type'
 
-const checkUserOwner: AsyncRequestHandler = async (req, res, next) => {
+const checkUserOwner = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
+  const { _id: userId } = req.payload
   try {
-    const { _id: userId } = req.payload
     const checkOuner = await ToDo.find({ owner: userId })
 
     if (checkOuner.length > 0) {

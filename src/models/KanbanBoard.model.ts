@@ -1,11 +1,11 @@
 import { Schema, model, type ObjectId } from 'mongoose'
+import { type IProject } from './Project.model'
 
 export interface IKanbanBoard {
-  boardId: ObjectId[]
   title: string
-  order: number
-  project: ObjectId[]
-  archived: boolean
+  project: IProject[]
+  completed: boolean
+  owner: ObjectId
 }
 
 const kanbanboardschema = new Schema(

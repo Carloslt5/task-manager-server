@@ -1,8 +1,10 @@
 import { Schema, model, type ObjectId } from 'mongoose'
+import { type IState } from './State.model'
 
 export interface IProject {
   title: string
   description: string
+  state: IState[]
   owner: ObjectId
 }
 

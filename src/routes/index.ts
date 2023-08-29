@@ -8,8 +8,8 @@ import ticket from './ticket.routes'
 
 const router = express.Router()
 
-router.use('/todos', todoRoutes)
 router.use('/auth', authRoutes)
+router.use('/todos', todoRoutes)
 router.use('/project', projectRoutes)
 router.use('/kanbanboard', kanbanboard)
 router.use('/state', state)

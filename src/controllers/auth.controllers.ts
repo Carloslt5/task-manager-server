@@ -1,7 +1,8 @@
-import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type Request, type NextFunction, type Response } from 'express'
 import User from '../models/User.model'
+import { type CustomRequest } from './Types/AsyncRequestHandler.Type'
 
-const signup: AsyncRequestHandler = async (req, res, next) => {
+const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { firstName, lastName, email, password } = req.body
 
   try {
@@ -12,7 +13,7 @@ const signup: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const login: AsyncRequestHandler = async (req, res, next) => {
+const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { email, password } = req.body
 
   if (email === '' || password === '') {
@@ -38,7 +39,7 @@ const login: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const verify: AsyncRequestHandler = async (req, res, next) => {
+const verify = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
   res.status(200).json(req.payload)
 }
 

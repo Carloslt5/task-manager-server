@@ -1,11 +1,13 @@
 import { type ObjectId, Schema, model } from 'mongoose'
+import { type IState } from './State.model'
+import { type IProject } from './Project.model'
 
 export interface IToDo {
   title: string
   description: string
   completed: boolean
-  projectId: ObjectId
-  state: ObjectId
+  projectId: IProject
+  state: IState[]
   owner: ObjectId
 }
 

@@ -1,8 +1,9 @@
-import { type ObjectId, Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import { type ITicket } from './Ticket.model'
 
 export interface IState {
   stateName: string
-  ticket: ObjectId[]
+  ticket: ITicket[]
 }
 
 const stateSchema = new Schema(

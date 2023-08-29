@@ -1,10 +1,12 @@
 import { type ObjectId, Schema, model } from 'mongoose'
+import { type IProject } from './Project.model'
+import { type IState } from './State.model'
 
 export interface ITicket {
   title: string
   completed: boolean
-  projectId: ObjectId
-  state: ObjectId
+  projectId: IProject
+  state: IState
   owner: ObjectId
 }
 
