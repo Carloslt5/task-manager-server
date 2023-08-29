@@ -1,5 +1,5 @@
-import { type TokenGetter, expressjwt, type Request } from 'express-jwt'
-import { type Response } from 'express'
+import { type TokenGetter, expressjwt } from 'express-jwt'
+import { type Response, type Request, type NextFunction } from 'express'
 import { type Secret } from 'jsonwebtoken'
 
 export const isAuthenticated = expressjwt({
@@ -9,15 +9,14 @@ export const isAuthenticated = expressjwt({
   getToken: getTokenFromHeaders as TokenGetter
 })
 
-async function getTokenFromHeaders(req: Request, res: Response): Promise<string | null> {
+async function getTokenFromHeaders(req: Request, res: Response, next: NextFunction): Promise<string | undefined> {
   if (req.headers.authorization === undefined) {
-    return ''
+    res.status(401).json('Please authenticate')
+    return
   }
-
   if (req.headers.authorization.split(' ')[0] === 'Bearer') {
     const token = req.headers.authorization.split(' ')[1]
     return token
   }
-
-  return ''
+  res.status(401).json('Please authenticate')
 }

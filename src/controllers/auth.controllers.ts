@@ -1,6 +1,6 @@
 import { type Request, type NextFunction, type Response } from 'express'
-import User from '../models/User.model'
-import { type CustomRequest } from './Types/AsyncRequestHandler.Type'
+import User, { type UserPayload } from '../models/User.model'
+import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { firstName, lastName, email, password } = req.body
@@ -39,7 +39,8 @@ const login = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 }
 
-const verify = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
+const verify: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  // console.log('ESTOY ENV VERIFY')
   res.status(200).json(req.payload)
 }
 

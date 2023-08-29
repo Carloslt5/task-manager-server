@@ -1,9 +1,10 @@
-import { type Response, type NextFunction } from 'express'
-import { type CustomRequest } from './Types/AsyncRequestHandler.Type'
+import { type Request, type Response, type NextFunction } from 'express'
 import ToDo from './../models/ToDo.model'
+import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type UserPayload } from '../models/User.model'
 
-const getAllTodos = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
-  const { _id } = req.payload
+const getAllTodos: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  const _id = req.payload?._id
 
   try {
     const todos = await ToDo.find({ owner: _id })
@@ -12,8 +13,8 @@ const getAllTodos = async (req: CustomRequest, res: Response, next: NextFunction
     res.status(500).json({ success: false, error })
   }
 }
-const createdTodo = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
-  const { _id } = req.payload
+const createdTodo: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  const _id = req.payload?._id
   const { title } = req.body
 
   try {
@@ -24,7 +25,7 @@ const createdTodo = async (req: CustomRequest, res: Response, next: NextFunction
   }
 }
 
-const updateTodo = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
+const updateTodo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { _id, completed }: { _id: string, completed: boolean } = req.body
 
   try {
@@ -35,7 +36,7 @@ const updateTodo = async (req: CustomRequest, res: Response, next: NextFunction)
   }
 }
 
-const deleteTodo = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
+const deleteTodo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { _id } = req.params
 
   try {
@@ -46,8 +47,8 @@ const deleteTodo = async (req: CustomRequest, res: Response, next: NextFunction)
   }
 }
 
-const deleteCompletedTodos = async (req: CustomRequest, res: Response, next: NextFunction): Promise<void> => {
-  const { _id } = req.payload
+const deleteCompletedTodos: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  const _id = req.payload?._id
 
   try {
     await ToDo.deleteMany({ owner: _id, completed: true })

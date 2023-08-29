@@ -11,7 +11,7 @@ export interface IUser {
   validatePassword: (plainPassword: string) => boolean
 }
 
-export interface ReqPayload {
+export interface UserPayload {
   _id: string
   firstName: string
   lastName: string

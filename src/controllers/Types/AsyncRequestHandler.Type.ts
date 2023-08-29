@@ -1,13 +1,7 @@
 import { type Response, type NextFunction, type Request } from 'express'
 
-export interface ReqPayload {
-  _id: string
-  firstName: string
-  lastName: string
+export interface PayloadRequest<T> extends Request {
+  payload?: T
 }
 
-export interface CustomRequest extends Request {
-  payload?: ReqPayload
-}
-
-export type AsyncRequestHandler = (req: CustomRequest, res: Response, next: NextFunction) => Promise<void>
+export type AsyncRequestHandler<T> = (req: PayloadRequest<T>, res: Response, next: NextFunction) => Promise<void>
