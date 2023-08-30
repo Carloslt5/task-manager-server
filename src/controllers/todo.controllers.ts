@@ -1,4 +1,4 @@
-import { type Request, type Response, type NextFunction } from 'express'
+import { type RequestHandler } from 'express'
 import ToDo from './../models/ToDo.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import { type UserPayload } from '../models/User.model'
@@ -25,7 +25,7 @@ const createdTodo: AsyncRequestHandler<UserPayload> = async (req, res, next) => 
   }
 }
 
-const updateTodo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const updateTodo: RequestHandler = async (req, res, next) => {
   const { _id, completed }: { _id: string, completed: boolean } = req.body
 
   try {
@@ -36,7 +36,7 @@ const updateTodo = async (req: Request, res: Response, next: NextFunction): Prom
   }
 }
 
-const deleteTodo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const deleteTodo: RequestHandler = async (req, res, next) => {
   const { _id } = req.params
 
   try {

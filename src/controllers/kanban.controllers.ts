@@ -1,9 +1,11 @@
+import { type Request } from 'express'
 import KanbanBoard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
+import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-const getKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
-  const { _id } = req.payload
+const getKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  const _id = req.payload?._id
   try {
     const kanbanBoards = await KanbanBoard.find({ owner: _id }).populate('project')
     res.status(200).json(kanbanBoards)
@@ -12,7 +14,7 @@ const getKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const getOneKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+const getOneKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) => {
   const { kanbanBoardId } = req.params
 
   try {
@@ -23,8 +25,8 @@ const getOneKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
-  const { _id } = req.payload
+const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  const _id = req.payload?._id
   const { title } = req.body
 
   try {
@@ -38,13 +40,9 @@ const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
-  interface UpdateArchived {
-    title?: string
-    completedValue?: boolean
-  }
+const updateKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) => {
   const { KanbanBoardId } = req.params
-  const { title } = req.body as UpdateArchived
+  const { title } = req.body as { title?: string }
 
   try {
     const kanbanBoardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title } }, { new: true })
@@ -57,7 +55,7 @@ const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const addProjectToKanban: AsyncRequestHandler = async (req, res, next) => {
+const addProjectToKanban: AsyncRequestHandler<Request> = async (req, res, next) => {
   const { KanbanBoardId } = req.params
   const { projectId } = req.body
 
@@ -78,7 +76,7 @@ const addProjectToKanban: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const deleteKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+const deleteKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) => {
   const { KanbanBoardId } = req.params
 
   try {
