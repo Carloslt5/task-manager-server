@@ -40,7 +40,11 @@ const login: RequestHandler = async (req, res, next) => {
 }
 
 const verify: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
-  res.status(200).json(req.payload)
+  if (req.payload !== null) {
+    res.status(200).json(req.payload)
+  }
+
+  res.status(401)
 }
 
 export {
