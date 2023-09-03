@@ -27,10 +27,10 @@ const getOneKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) =
 
 const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
-  const { title } = req.body
+  const { title, description } = req.body
 
   try {
-    const kanbanboard = await KanbanBoard.create({ title, owner: _id })
+    const kanbanboard = await KanbanBoard.create({ title, description, owner: _id })
     if (kanbanboard === null) {
       res.status(500).json({ message: 'Error can not Create' })
     }
@@ -42,7 +42,7 @@ const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, nex
 
 const updateKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) => {
   const { KanbanBoardId } = req.params
-  const { title } = req.body as { title?: string }
+  const { title }: { title?: string } = req.body
 
   try {
     const kanbanBoardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title } }, { new: true })

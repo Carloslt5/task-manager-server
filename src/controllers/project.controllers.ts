@@ -39,10 +39,11 @@ const createProject: AsyncRequestHandler<UserPayload> = async (req, res, next) =
 }
 
 const updateProject: AsyncRequestHandler<Request> = async (req, res, next) => {
-  const { _id, title, description } = req.body
+  const { projectId } = req.params
+  const { title } = req.body
 
   try {
-    const project = await Project.findByIdAndUpdate(_id, { title, description }, { new: true })
+    const project = await Project.findByIdAndUpdate(projectId, { title }, { new: true })
     res.status(200).json({ project })
   } catch (error) {
     res.status(500).json({ success: false, error })

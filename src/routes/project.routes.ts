@@ -7,7 +7,7 @@ const router = express.Router()
 router.get('/getAllProject', isAuthenticated, getAllProject)
 router.get('/getOneProject/:projectId', isAuthenticated, getOneProject)
 router.post('/createProject/:kanbanBoardId', isAuthenticated, createProject)
-router.put('/updateProject', isAuthenticated, updateProject)
+router.put('/updateProject/:projectId', isAuthenticated, updateProject)
 router.delete('/deleteProject/:projectId', isAuthenticated, deleteProject)
 
 export default router
