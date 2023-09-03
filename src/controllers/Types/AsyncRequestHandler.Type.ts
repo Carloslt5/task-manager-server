@@ -1,7 +1,4 @@
-import { type Response, type NextFunction, type Request } from 'express'
+import { type Response, type NextFunction } from 'express'
+import { type CustomRequest } from '../../middlewares/verifyToken.middleware'
 
-export interface PayloadRequest<T> extends Request {
-  payload?: T
-}
-
-export type AsyncRequestHandler<T> = (req: PayloadRequest<T>, res: Response, next: NextFunction) => Promise<void>
+export type AsyncRequestHandler = (req: CustomRequest, res: Response, next: NextFunction) => Promise<void>

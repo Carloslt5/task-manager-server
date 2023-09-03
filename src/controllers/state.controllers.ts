@@ -1,9 +1,8 @@
-import { type Request } from 'express'
 import Project from '../models/Project.model'
 import State from '../models/State.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-const getStates: AsyncRequestHandler<Request> = async (req, res, next) => {
+const getStates: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
   try {
     const states = await State.find({ project: projectId }).populate('project')
@@ -14,7 +13,7 @@ const getStates: AsyncRequestHandler<Request> = async (req, res, next) => {
   }
 }
 
-const createState: AsyncRequestHandler<Request> = async (req, res, next) => {
+const createState: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
   const { stateName } = req.body
 

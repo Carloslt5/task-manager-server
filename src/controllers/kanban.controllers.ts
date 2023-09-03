@@ -1,10 +1,8 @@
-import { type Request } from 'express'
 import KanbanBoard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
-import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-const getKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const getKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const _id = req.payload?._id
   try {
     const kanbanBoards = await KanbanBoard.find({ owner: _id }).populate('project')
@@ -14,7 +12,7 @@ const getKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) 
   }
 }
 
-const getOneKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) => {
+const getOneKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const { kanbanBoardId } = req.params
 
   try {
@@ -25,7 +23,7 @@ const getOneKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) =
   }
 }
 
-const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const _id = req.payload?._id
   const { title, description } = req.body
 
@@ -34,13 +32,13 @@ const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, nex
     if (kanbanboard === null) {
       res.status(500).json({ message: 'Error can not Create' })
     }
-    res.status(200).json(kanbanboard)
+    res.status(201).json(kanbanboard)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
 }
 
-const updateKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) => {
+const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const { KanbanBoardId } = req.params
   const { title }: { title?: string } = req.body
 
@@ -55,7 +53,7 @@ const updateKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) =
   }
 }
 
-const addProjectToKanban: AsyncRequestHandler<Request> = async (req, res, next) => {
+const addProjectToKanban: AsyncRequestHandler = async (req, res, next) => {
   const { KanbanBoardId } = req.params
   const { projectId } = req.body
 
@@ -70,13 +68,13 @@ const addProjectToKanban: AsyncRequestHandler<Request> = async (req, res, next) 
     if (kanbanBoardUpdated === null) {
       res.status(500).json({ message: 'Kanban Board not found' })
     }
-    res.status(200).json(kanbanBoardUpdated)
+    res.status(201).json(kanbanBoardUpdated)
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
 }
 
-const deleteKanbanBoard: AsyncRequestHandler<Request> = async (req, res, next) => {
+const deleteKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const { KanbanBoardId } = req.params
 
   try {

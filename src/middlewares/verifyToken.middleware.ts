@@ -1,17 +1,26 @@
-import { expressjwt } from 'express-jwt'
-import { type Request } from 'express'
-import { type Secret } from 'jsonwebtoken'
+import { type Request, type Response, type NextFunction } from 'express'
+import jwt, { type JwtPayload, type Secret } from 'jsonwebtoken'
 
-export const isAuthenticated = expressjwt({
-  secret: process.env.TOKEN_SECRET as Secret,
-  algorithms: ['HS256'],
-  requestProperty: 'payload',
-  getToken: getTokenFromHeaders
-})
+export const SECRET_KEY: Secret = process.env.TOKEN_SECRET as string
 
-function getTokenFromHeaders(req: Request): string | undefined {
-  if (req?.headers?.authorization?.split(' ')[0] === 'Bearer') {
-    const token = req.headers.authorization.split(' ')[1]
-    return token
+export interface CustomRequest extends Request {
+  payload?: string | JwtPayload
+}
+
+export const isAuthenticated = async (req: Request, res: Response, next: NextFunction): Promise<undefined> => {
+  try {
+    const token = req.headers.authorization?.replace('Bearer ', '')
+
+    if (token == null) {
+      res.status(401).json({ error: 'No token provided' })
+      return
+    }
+
+    const decoded = jwt.verify(token, SECRET_KEY);
+    (req as CustomRequest).payload = decoded
+
+    next()
+  } catch (err) {
+    next(err)
   }
 }

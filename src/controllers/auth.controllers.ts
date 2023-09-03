@@ -1,5 +1,5 @@
 import { type RequestHandler } from 'express'
-import User, { type UserPayload } from '../models/User.model'
+import User from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const signup: RequestHandler = async (req, res, next) => {
@@ -39,12 +39,8 @@ const login: RequestHandler = async (req, res, next) => {
   }
 }
 
-const verify: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
-  if (req.payload !== null) {
-    res.status(200).json(req.payload)
-  }
-
-  res.status(401)
+const verify: AsyncRequestHandler = async (req, res, next) => {
+  res.status(200).json(req.payload)
 }
 
 export {

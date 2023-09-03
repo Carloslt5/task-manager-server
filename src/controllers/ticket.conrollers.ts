@@ -1,9 +1,7 @@
-import { type Request } from 'express'
 import Ticket from '../models/Ticket.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
-import { type UserPayload } from '../models/User.model'
 
-const getTicket: AsyncRequestHandler<Request> = async (req, res, next) => {
+const getTicket: AsyncRequestHandler = async (req, res, next) => {
   try {
     const tickets = await Ticket.find().populate('state')
     res.status(200).json(tickets)
@@ -12,7 +10,7 @@ const getTicket: AsyncRequestHandler<Request> = async (req, res, next) => {
   }
 }
 
-const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const createdTicket: AsyncRequestHandler = async (req, res, next) => {
   const _id = req.payload?._id
   const { projectId } = req.params
   const { stateId, newTicket: { title } } = req.body

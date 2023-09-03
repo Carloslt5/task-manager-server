@@ -1,10 +1,8 @@
-import { type Request } from 'express'
 import Kanbanboard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
-import { type UserPayload } from '../models/User.model'
 
-const getAllProject: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const getAllProject: AsyncRequestHandler = async (req, res, next) => {
   const _id = req.payload?._id
   try {
     const projects = await Project.find({ owner: _id })
@@ -13,7 +11,7 @@ const getAllProject: AsyncRequestHandler<UserPayload> = async (req, res, next) =
     res.status(500).json({ success: false, error })
   }
 }
-const getOneProject: AsyncRequestHandler<Request> = async (req, res, next) => {
+const getOneProject: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
 
   try {
@@ -24,7 +22,7 @@ const getOneProject: AsyncRequestHandler<Request> = async (req, res, next) => {
   }
 }
 
-const createProject: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const createProject: AsyncRequestHandler = async (req, res, next) => {
   const _id = req.payload?._id
   const { kanbanBoardId } = req.params
   const { title, description } = req.body
@@ -38,7 +36,7 @@ const createProject: AsyncRequestHandler<UserPayload> = async (req, res, next) =
   }
 }
 
-const updateProject: AsyncRequestHandler<Request> = async (req, res, next) => {
+const updateProject: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
   const { title } = req.body
 
@@ -50,7 +48,7 @@ const updateProject: AsyncRequestHandler<Request> = async (req, res, next) => {
   }
 }
 
-const deleteProject: AsyncRequestHandler<Request> = async (req, res, next) => {
+const deleteProject: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
 
   try {
