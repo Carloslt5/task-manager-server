@@ -6,10 +6,10 @@ export default (app: Express): void => {
   })
 
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    // console.error('ERROR', req.method, req.path, err)
+    console.error('ERROR', req.method, req.path, err)
 
-    if ('code' in err && err.code === 'credentials_required') {
-      res.status(401).json({ error: 'No authorization token was found' })
+    if (err.name === 'UnauthorizedError') {
+      res.status(401).json({ message: 'Invalid Token' })
     }
 
     if (!res.headersSent) {

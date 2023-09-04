@@ -1,8 +1,7 @@
-import { type RequestHandler } from 'express'
-import User from '../models/User.model'
+import User, { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-const signup: RequestHandler = async (req, res, next) => {
+const signup: AsyncRequestHandler = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body
 
   try {
@@ -13,7 +12,7 @@ const signup: RequestHandler = async (req, res, next) => {
   }
 }
 
-const login: RequestHandler = async (req, res, next) => {
+const login: AsyncRequestHandler = async (req, res, next) => {
   const { email, password } = req.body
 
   if (email === '' || password === '') {
@@ -39,7 +38,7 @@ const login: RequestHandler = async (req, res, next) => {
   }
 }
 
-const verify: AsyncRequestHandler = async (req, res, next) => {
+const verify: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   res.status(200).json(req.payload)
 }
 
