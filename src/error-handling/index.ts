@@ -9,7 +9,7 @@ export default (app: Express): void => {
     console.error('ERROR', req.method, req.path, err)
 
     if (err.name === 'UnauthorizedError') {
-      res.status(401).json({ message: 'Invalid Token' })
+      res.status(401).json({ message: 'No authorization token was found' })
     }
 
     if (!res.headersSent) {

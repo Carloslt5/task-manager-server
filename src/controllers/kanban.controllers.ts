@@ -1,8 +1,9 @@
 import KanbanBoard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
+import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-const getKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+const getKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
   try {
     const kanbanBoards = await KanbanBoard.find({ owner: _id }).populate('project')
@@ -23,7 +24,7 @@ const getOneKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const createKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
   const { title, description } = req.body
 

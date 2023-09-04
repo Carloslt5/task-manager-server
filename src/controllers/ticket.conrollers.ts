@@ -1,4 +1,5 @@
 import Ticket from '../models/Ticket.model'
+import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getTicket: AsyncRequestHandler = async (req, res, next) => {
@@ -10,7 +11,7 @@ const getTicket: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const createdTicket: AsyncRequestHandler = async (req, res, next) => {
+const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
   const { projectId } = req.params
   const { stateId, newTicket: { title } } = req.body

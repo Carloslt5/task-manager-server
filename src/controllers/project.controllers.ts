@@ -1,8 +1,9 @@
 import Kanbanboard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
+import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-const getAllProject: AsyncRequestHandler = async (req, res, next) => {
+const getAllProject: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
   try {
     const projects = await Project.find({ owner: _id })
@@ -22,7 +23,7 @@ const getOneProject: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const createProject: AsyncRequestHandler = async (req, res, next) => {
+const createProject: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
   const { kanbanBoardId } = req.params
   const { title, description } = req.body
