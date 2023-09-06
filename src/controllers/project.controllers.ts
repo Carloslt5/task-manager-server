@@ -49,6 +49,23 @@ const updateProject: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
+const updateOrderSates: AsyncRequestHandler = async (req, res, next) => {
+  const { projectId } = req.params
+  const { oldIndex, newIndex } = req.body
+
+  try {
+    const projectFound = await Project.findById(projectId)
+    if (projectFound != null) {
+      const [movedState] = projectFound?.state.splice(oldIndex, 1)
+      projectFound?.state.splice(newIndex, 0, movedState)
+      const projectOrderState = await projectFound?.save()
+      res.status(200).json(projectOrderState)
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
+
 const deleteProject: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
 
@@ -64,5 +81,6 @@ export {
   getOneProject,
   createProject,
   updateProject,
+  updateOrderSates,
   deleteProject
 }
