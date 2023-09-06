@@ -12,11 +12,11 @@ const stateSchema = new Schema(
       type: String,
       required: [true, 'Name is required'],
       trim: true
-    },
-    ticket: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Task'
-    }]
+    }
+    // ticket: [{
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'Task'
+    // }]
   },
   {
     timestamps: true

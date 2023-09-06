@@ -15,7 +15,6 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
   const _id = req.payload?._id
   const { projectId } = req.params
   const { stateId, newTicket: { title } } = req.body
-  console.log(req.body)
 
   try {
     const createdTicket = await Ticket.create({ title, projectId, state: stateId, owner: _id })
@@ -24,8 +23,19 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
     res.status(500).json({ success: false, error })
   }
 }
+const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
+  const { ticketID, state } = req.body
+
+  try {
+    await Ticket.findByIdAndUpdate(ticketID, { $set: { state } })
+    res.status(200)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 export {
   getTicket,
-  createdTicket
+  createdTicket,
+  updateStateTicket
 }
