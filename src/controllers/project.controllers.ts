@@ -16,7 +16,12 @@ const getOneProject: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
 
   try {
-    const project = await Project.findById(projectId).populate('state')
+    const project = await Project.findById(projectId).populate({
+      path: 'state',
+      populate: {
+        path: 'ticket'
+      }
+    })
     res.status(200).json(project)
   } catch (error) {
     res.status(500).json({ success: false, error })

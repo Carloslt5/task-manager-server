@@ -25,10 +25,10 @@ const ticketSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Project'
     },
-    state: {
-      type: Schema.Types.ObjectId,
-      ref: 'State'
-    },
+    // state: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'State'
+    // },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User'
