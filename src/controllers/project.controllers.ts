@@ -5,6 +5,7 @@ import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getAllProject: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
+
   try {
     const projects = await Project.find({ owner: _id })
     res.status(200).json(projects)
@@ -16,12 +17,7 @@ const getOneProject: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
 
   try {
-    const project = await Project.findById(projectId).populate({
-      path: 'state',
-      populate: {
-        path: 'ticket'
-      }
-    })
+    const project = await Project.findById(projectId).populate('state')
     res.status(200).json(project)
   } catch (error) {
     res.status(500).json({ success: false, error })
