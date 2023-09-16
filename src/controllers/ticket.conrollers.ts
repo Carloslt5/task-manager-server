@@ -1,4 +1,3 @@
-import State from '../models/State.model'
 import Ticket from '../models/Ticket.model'
 import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
@@ -19,7 +18,6 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
 
   try {
     const createdTicket = await Ticket.create({ title, projectId, state: stateId, owner: _id })
-    // const addTicketToState = await State.findByIdAndUpdate(stateId, { $addToSet: { ticket: createdTicket } }, { new: true })
     res.status(200).json(createdTicket)
   } catch (error) {
     res.status(500).json({ success: false, error })
@@ -27,11 +25,11 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
 }
 
 const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
-  const { ticketID, state } = req.body
+  const { ticketId, stateId } = req.body
 
   try {
-    await Ticket.findByIdAndUpdate(ticketID, { $set: { state } })
-    res.status(200)
+    const newStateTicket = await Ticket.findByIdAndUpdate(ticketId, { state: stateId }, { new: true })
+    res.status(200).json(newStateTicket)
   } catch (error) {
     console.log(error)
   }
