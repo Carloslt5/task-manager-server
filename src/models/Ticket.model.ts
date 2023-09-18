@@ -21,7 +21,7 @@ const ticketSchema = new Schema(
       type: Boolean,
       default: false
     },
-    projectId: {
+    project: {
       type: Schema.Types.ObjectId,
       ref: 'Project'
     },

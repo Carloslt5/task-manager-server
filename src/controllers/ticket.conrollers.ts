@@ -4,7 +4,7 @@ import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getTicket: AsyncRequestHandler = async (req, res, next) => {
   try {
-    const tickets = await Ticket.find().populate('state')
+    const tickets = await Ticket.find().populate('state').populate('project')
     res.status(200).json(tickets)
   } catch (error) {
     res.status(500).json({ success: false, error })
@@ -17,7 +17,7 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
   const { stateId, newTicket: { title } } = req.body
 
   try {
-    const createdTicket = await Ticket.create({ title, projectId, state: stateId, owner: _id })
+    const createdTicket = await Ticket.create({ title, project: projectId, state: stateId, owner: _id })
     res.status(200).json(createdTicket)
   } catch (error) {
     res.status(500).json({ success: false, error })
@@ -35,8 +35,20 @@ const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
+const deleteTicket: AsyncRequestHandler = async (req, res, next) => {
+  const { ticketId } = req.params
+
+  try {
+    await Ticket.findByIdAndDelete(ticketId)
+    res.status(200).json({ message: 'Todo deleted' })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export {
   getTicket,
   createdTicket,
-  updateStateTicket
+  updateStateTicket,
+  deleteTicket
 }
