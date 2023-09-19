@@ -26,7 +26,19 @@ const createState: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
+const editState: AsyncRequestHandler = async (req, res, next) => {
+  const { _id: stateId, stateName } = req.body
+
+  try {
+    const updateState = await State.findByIdAndUpdate(stateId, { stateName }, { new: true })
+    res.status(200).json(updateState)
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
+
 export {
   getStates,
-  createState
+  createState,
+  editState
 }
