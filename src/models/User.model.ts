@@ -1,14 +1,18 @@
-import { Schema, model } from 'mongoose'
+import { Schema, type Model, model } from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt, { type Secret } from 'jsonwebtoken'
 
-export interface IUser {
+export interface IUser extends Document {
   firstName: string
   lastName: string
   email: string
   password: string
   signToken: () => Promise<string>
   validatePassword: (plainPassword: string) => boolean
+}
+
+export interface IUserModel extends Model<IUser> {
+  checkOwnerForUser: (userId: string, profileId: string) => Promise<number>
 }
 
 export interface UserPayload {
@@ -67,6 +71,10 @@ userSchema.methods.signToken = function () {
   return authToken
 }
 
-const User = model<IUser>('User', userSchema)
+userSchema.statics.checkOwnerForUser = function (userId, profileId) {
+  return this.count({ $and: [{ _id: userId }, { _id: profileId }] })
+}
+
+const User = model<IUser, IUserModel>('User', userSchema)
 
 export default User

@@ -1,19 +1,23 @@
 import { type AsyncRequestHandler } from '../controllers/Types/AsyncRequestHandler.Type'
-
-import ToDo from '../models/ToDo.model'
-import { type UserPayload } from '../models/User.model'
+import User, { type UserPayload } from '../models/User.model'
 
 const checkUserOwner: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const userId = req.payload?._id
-  try {
-    const checkOuner = await ToDo.find({ owner: userId })
-    if (checkOuner.length > 0) {
-      next()
-    } else {
-      res.status(401).json({ errorMessages: ['No eres el dueño de este perfil'] })
+  const { id: profileId } = req.params
+
+  if (typeof userId === 'string' && typeof profileId === 'string') {
+    try {
+      const count = await User.checkOwnerForUser(userId, profileId)
+      if (count > 0) {
+        next()
+      } else {
+        res.status(401).json({ errorMessages: ['No eres el dueño de este perfil'] })
+      }
+    } catch (error) {
+      next(error)
     }
-  } catch (error) {
-    next(error)
+  } else {
+    res.status(400).json({ errorMessages: ['Parámetros inválidos'] })
   }
 }
 
