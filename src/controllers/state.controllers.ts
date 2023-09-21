@@ -41,13 +41,12 @@ const editState: AsyncRequestHandler = async (req, res, next) => {
 const deleteState: AsyncRequestHandler = async (req, res, next) => {
   const { stateId } = req.params
   try {
-    const deleteTickets = Ticket.deleteMany({ state: stateId })
-    const deleteState = State.findByIdAndDelete(stateId)
-    const deleteStateProject = Project.updateMany(
+    await Ticket.deleteMany({ state: stateId })
+    await State.findByIdAndDelete(stateId)
+    await Project.findOneAndUpdate(
       { state: stateId },
       { $pull: { state: stateId } }
     )
-    await Promise.all([deleteTickets, deleteState, deleteStateProject])
     res.status(200).json({ success: true })
   } catch (error) {
     res.status(500).json({ success: false, error })
