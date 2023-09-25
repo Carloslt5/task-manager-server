@@ -9,6 +9,7 @@ export interface IToDo {
   projectId: IProject
   state: IState[]
   owner: ObjectId
+  order: number
 }
 
 const todoSchema = new Schema(
@@ -37,6 +38,9 @@ const todoSchema = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User'
+    },
+    order: {
+      type: Number
     }
   },
   {

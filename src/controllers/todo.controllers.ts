@@ -6,7 +6,7 @@ const getAllTodos: AsyncRequestHandler<UserPayload> = async (req, res, next) => 
   const userId = req.payload?._id
 
   try {
-    const todos = await ToDo.find({ owner: userId })
+    const todos = await ToDo.find({ owner: userId }).sort('order')
     res.status(200).json(todos)
   } catch (error) {
     res.status(500).json({ success: false, error })
@@ -17,7 +17,10 @@ const createdTodo: AsyncRequestHandler<UserPayload> = async (req, res, next) => 
   const { title } = req.body
 
   try {
-    const todo = await ToDo.create({ title, owner: _id })
+    const userTodos = await ToDo.find({ owner: _id })
+    let order = 0
+    if (userTodos.length > 0) { order = userTodos.length + 1 }
+    const todo = await ToDo.create({ title, owner: _id, order })
     res.status(200).json({ todo })
   } catch (error) {
     res.status(500).json({ success: false, error })
