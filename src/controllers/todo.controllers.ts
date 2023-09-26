@@ -59,11 +59,24 @@ const deleteCompletedTodos: AsyncRequestHandler<UserPayload> = async (req, res, 
     res.status(500).json({ success: false, error })
   }
 }
+const updateTodoOrder: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  const { updatedOrder } = req.body
+
+  try {
+    for (const todo of updatedOrder) {
+      await ToDo.findByIdAndUpdate(todo._id, { order: todo.order }, { new: true })
+    }
+    res.status(200).json({ message: 'Order Completed' })
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
 
 export {
   getAllTodos,
   createdTodo,
   updateTodo,
   deleteTodo,
-  deleteCompletedTodos
+  deleteCompletedTodos,
+  updateTodoOrder
 }
