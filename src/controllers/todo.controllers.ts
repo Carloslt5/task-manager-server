@@ -19,7 +19,7 @@ const createdTodo: AsyncRequestHandler<UserPayload> = async (req, res, next) => 
   try {
     const userTodos = await ToDo.find({ owner: _id })
     let order = 0
-    if (userTodos.length > 0) { order = userTodos.length + 1 }
+    if (userTodos.length > 0) { order = userTodos.length }
     const todo = await ToDo.create({ title, owner: _id, order })
     res.status(200).json({ todo })
   } catch (error) {
@@ -59,9 +59,9 @@ const deleteCompletedTodos: AsyncRequestHandler<UserPayload> = async (req, res, 
     res.status(500).json({ success: false, error })
   }
 }
+
 const updateTodoOrder: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const { updatedOrder } = req.body
-
   try {
     for (const todo of updatedOrder) {
       await ToDo.findByIdAndUpdate(todo._id, { order: todo.order }, { new: true })
