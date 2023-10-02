@@ -3,9 +3,9 @@ import { type IProject } from './Project.model'
 import { type IState } from './State.model'
 
 enum Priority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
+  LOW = 'Low',
+  MEDIUM = 'Medium',
+  HIGH = 'High',
 }
 
 export interface ITicket extends Document {

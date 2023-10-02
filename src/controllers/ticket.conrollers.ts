@@ -14,10 +14,10 @@ const getTicket: AsyncRequestHandler = async (req, res, next) => {
 const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
   const { projectId } = req.params
-  const { stateId, newTicket: { title, description } } = req.body
+  const { stateId, newTicket: { title, description, priority } } = req.body
 
   try {
-    const createdTicket = await Ticket.create({ title, description, project: projectId, state: stateId, owner: _id })
+    const createdTicket = await Ticket.create({ title, description, priority, project: projectId, state: stateId, owner: _id })
     res.status(200).json(createdTicket)
   } catch (error) {
     res.status(500).json({ success: false, error })
