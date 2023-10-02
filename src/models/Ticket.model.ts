@@ -2,11 +2,18 @@ import { type ObjectId, Schema, model } from 'mongoose'
 import { type IProject } from './Project.model'
 import { type IState } from './State.model'
 
-export interface ITicket {
+enum Priority {
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
+}
+
+export interface ITicket extends Document {
   title: string
-  completed: boolean
   projectId: IProject
+  description: string
   state: IState
+  priority: Priority
   owner: ObjectId
 }
 
@@ -17,9 +24,9 @@ const ticketSchema = new Schema(
       required: [true, 'Title is required'],
       trim: true
     },
-    completed: {
-      type: Boolean,
-      default: false
+    description: {
+      type: String,
+      trim: true
     },
     project: {
       type: Schema.Types.ObjectId,
@@ -28,6 +35,12 @@ const ticketSchema = new Schema(
     state: {
       type: Schema.Types.ObjectId,
       ref: 'State'
+    },
+    priority: {
+      type: String,
+      enum: [Priority.LOW, Priority.MEDIUM, Priority.HIGH],
+      default: Priority.LOW,
+      required: [true, 'Priority is required']
     },
     owner: {
       type: Schema.Types.ObjectId,

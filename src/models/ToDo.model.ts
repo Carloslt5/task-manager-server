@@ -1,13 +1,11 @@
 import { type ObjectId, Schema, model } from 'mongoose'
-import { type IState } from './State.model'
 import { type IProject } from './Project.model'
 
-export interface IToDo {
+export interface IToDo extends Document {
   title: string
   description: string
   completed: boolean
   projectId: IProject
-  state: IState[]
   owner: ObjectId
   order: number
 }
@@ -30,10 +28,6 @@ const todoSchema = new Schema(
     projectId: {
       type: Schema.Types.ObjectId,
       ref: 'Project'
-    },
-    state: {
-      type: Schema.Types.ObjectId,
-      ref: 'State'
     },
     owner: {
       type: Schema.Types.ObjectId,

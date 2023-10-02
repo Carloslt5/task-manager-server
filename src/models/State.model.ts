@@ -1,9 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { type ITicket } from './Ticket.model'
 
-export interface IState {
+export interface IState extends Document {
   stateName: string
-  ticket: ITicket[]
 }
 
 const stateSchema = new Schema(
@@ -13,10 +11,6 @@ const stateSchema = new Schema(
       required: [true, 'Name is required'],
       trim: true
     }
-    // ticket: [{
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'Ticket'
-    // }]
   },
   {
     timestamps: true

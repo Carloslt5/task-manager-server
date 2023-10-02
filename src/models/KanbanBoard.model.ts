@@ -1,10 +1,9 @@
 import { Schema, model, type ObjectId } from 'mongoose'
 import { type IProject } from './Project.model'
 
-export interface IKanbanBoard {
+export interface IKanbanBoard extends Document {
   title: string
   project: IProject[]
-  completed: boolean
   owner: ObjectId
 }
 
@@ -19,10 +18,6 @@ const kanbanboardschema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Project'
     }],
-    completed: {
-      type: Boolean,
-      default: false
-    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'User'

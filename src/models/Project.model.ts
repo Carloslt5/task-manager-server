@@ -1,7 +1,7 @@
 import { Schema, model, type ObjectId } from 'mongoose'
 import { type IState } from './State.model'
 
-export interface IProject {
+export interface IProject extends Document {
   title: string
   description: string
   state: IState[]
