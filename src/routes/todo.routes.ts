@@ -1,11 +1,12 @@
 import express from 'express'
 import { isAuthenticated } from './../middlewares/verifyToken.middleware'
 import { checkUserOwner } from './../middlewares/checkUserOwner'
-import { getAllTodos, createdTodo, updateTodo, deleteTodo, deleteCompletedTodos, updateTodoOrder } from './../controllers/todo.controllers'
+import { getAllTodos, createdTodo, updateTodo, deleteTodo, deleteCompletedTodos, updateTodoOrder, getTicketToDos } from './../controllers/todo.controllers'
 
 const router = express.Router()
 
 router.get('/:id/getAllTodos', isAuthenticated, checkUserOwner, getAllTodos)
+router.get('/:id/:ticketID/getTicketToDos', isAuthenticated, checkUserOwner, getTicketToDos)
 router.post('/:id/createdTodo', isAuthenticated, checkUserOwner, createdTodo)
 router.put('/:id/updateTodo', isAuthenticated, checkUserOwner, updateTodo)
 router.put('/:id/updateTodoOrder', isAuthenticated, checkUserOwner, updateTodoOrder)

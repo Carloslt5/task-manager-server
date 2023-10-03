@@ -12,16 +12,28 @@ const getAllTodos: AsyncRequestHandler<UserPayload> = async (req, res, next) => 
     res.status(500).json({ success: false, error })
   }
 }
+
+const getTicketToDos: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+  const { ticketID } = req.params
+
+  try {
+    const todos = await ToDo.find({ ticket: ticketID })
+    res.status(200).json(todos)
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
+
 const createdTodo: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
-  const { title } = req.body
+  const { newTodo: { title }, ticketID } = req.body
 
   try {
     const userTodos = await ToDo.find({ owner: _id })
     let order = 0
     if (userTodos.length > 0) { order = userTodos.length }
-    const todo = await ToDo.create({ title, owner: _id, order })
-    res.status(200).json({ todo })
+    await ToDo.create({ title, owner: _id, order, ticket: ticketID })
+    res.status(200).json({ message: 'Todo Created' })
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
@@ -74,6 +86,7 @@ const updateTodoOrder: AsyncRequestHandler<UserPayload> = async (req, res, next)
 
 export {
   getAllTodos,
+  getTicketToDos,
   createdTodo,
   updateTodo,
   deleteTodo,
