@@ -40,6 +40,7 @@ const editState: AsyncRequestHandler = async (req, res, next) => {
 
 const deleteState: AsyncRequestHandler = async (req, res, next) => {
   const { stateId } = req.params
+
   try {
     await Ticket.deleteMany({ state: stateId })
     await State.findByIdAndDelete(stateId)
