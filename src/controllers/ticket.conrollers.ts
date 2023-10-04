@@ -1,4 +1,5 @@
 import Ticket from '../models/Ticket.model'
+import ToDo from '../models/ToDo.model'
 import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
@@ -39,6 +40,7 @@ const deleteTicket: AsyncRequestHandler = async (req, res, next) => {
   const { ticketId } = req.params
 
   try {
+    await ToDo.deleteMany({ ticket: ticketId })
     await Ticket.findByIdAndDelete(ticketId)
     res.status(200).json({ message: 'Todo deleted' })
   } catch (error) {
