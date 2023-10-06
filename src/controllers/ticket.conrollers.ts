@@ -25,6 +25,18 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
   }
 }
 
+const updateTickettTitle: AsyncRequestHandler = async (req, res, next) => {
+  const { ticketID } = req.params
+  const { title } = req.body
+
+  try {
+    const updateTickettTitle = await Ticket.findByIdAndUpdate(ticketID, { title }, { new: true })
+    res.status(200).json(updateTickettTitle)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
   const { ticketId, stateId } = req.body
 
@@ -51,6 +63,7 @@ const deleteTicket: AsyncRequestHandler = async (req, res, next) => {
 export {
   getTicket,
   createdTicket,
+  updateTickettTitle,
   updateStateTicket,
   deleteTicket
 }
