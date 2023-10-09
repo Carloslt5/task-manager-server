@@ -27,10 +27,10 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
 
 const updateTicketDetails: AsyncRequestHandler = async (req, res, next) => {
   const { ticketID } = req.params
-  const { title, description } = req.body
+  const { title, description, priority } = req.body
 
   try {
-    const updateTickettTitle = await Ticket.findByIdAndUpdate(ticketID, { title, description }, { new: true })
+    const updateTickettTitle = await Ticket.findByIdAndUpdate(ticketID, { title, description, priority }, { new: true })
     res.status(200).json(updateTickettTitle)
   } catch (error) {
     console.log(error)
