@@ -49,6 +49,7 @@ const updateTodo: AsyncRequestHandler = async (req, res, next) => {
     res.status(500).json({ success: false, error })
   }
 }
+
 const updateTitleToDo: AsyncRequestHandler = async (req, res, next) => {
   const { _id, title } = req.body
 
@@ -61,7 +62,7 @@ const updateTitleToDo: AsyncRequestHandler = async (req, res, next) => {
 }
 
 const deleteTodo: AsyncRequestHandler = async (req, res, next) => {
-  const { _id: todoID } = req.params
+  const { todoID } = req.params
 
   try {
     await ToDo.findByIdAndDelete(todoID)

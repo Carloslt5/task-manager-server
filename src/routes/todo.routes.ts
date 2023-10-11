@@ -11,7 +11,7 @@ router.post('/:id/createdTodo', isAuthenticated, checkUserOwner, createdTodo)
 router.put('/:id/updateTodo', isAuthenticated, checkUserOwner, updateTodo)
 router.put('/:id/updateTitleToDo', isAuthenticated, checkUserOwner, updateTitleToDo)
 router.put('/:id/updateTodoOrder', isAuthenticated, checkUserOwner, updateTodoOrder)
-router.delete('/:id/deleteTodo/:_id', isAuthenticated, checkUserOwner, deleteTodo)
+router.delete('/:id/deleteTodo/:todoID', isAuthenticated, checkUserOwner, deleteTodo)
 router.delete('/:id/deleteCompletedTodos', isAuthenticated, checkUserOwner, deleteCompletedTodos)
 
 export default router
