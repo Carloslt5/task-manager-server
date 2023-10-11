@@ -49,6 +49,16 @@ const updateTodo: AsyncRequestHandler = async (req, res, next) => {
     res.status(500).json({ success: false, error })
   }
 }
+const updateTitleToDo: AsyncRequestHandler = async (req, res, next) => {
+  const { _id, title } = req.body
+
+  try {
+    const todo = await ToDo.findByIdAndUpdate(_id, { title }, { new: true })
+    res.status(200).json({ todo })
+  } catch (error) {
+    res.status(500).json({ success: false, error })
+  }
+}
 
 const deleteTodo: AsyncRequestHandler = async (req, res, next) => {
   const { _id: todoID } = req.params
@@ -89,6 +99,7 @@ export {
   getTicketToDos,
   createdTodo,
   updateTodo,
+  updateTitleToDo,
   deleteTodo,
   deleteCompletedTodos,
   updateTodoOrder
