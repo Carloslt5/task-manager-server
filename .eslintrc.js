@@ -29,13 +29,13 @@ module.exports = {
     "semi": [1, "never"],
     "no-multi-spaces": "error",
     "quotes": [2, "single"],
-    "@typescript-eslint/no-misused-promises": [
+    "@/typescript-eslint/no-misused-promises": [
       "error",
       {
         "checksVoidReturn": false
       }
     ],
-    "@typescript-eslint/space-before-function-paren": "off"
+    "@/typescript-eslint/space-before-function-paren": "off"
 
   }
 }
