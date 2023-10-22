@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "build": "node_modules/.bin/tsc"
+    "dev": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
+    "build": "tsc"
   },
   "dependencies": {
     "axios": "^1.4.0",
@@ -27,6 +27,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.4",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.46.0",
     "eslint-config-standard-with-typescript": "^37.0.0",
     "eslint-plugin-import": "^2.28.0",
