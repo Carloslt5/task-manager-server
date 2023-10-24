@@ -1,4 +1,4 @@
-import ToDo from './../models/ToDo.model'
+import ToDo from '../models/ToDo.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import { type UserPayload } from '../models/User.model'
 
