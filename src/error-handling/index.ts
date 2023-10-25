@@ -10,7 +10,7 @@ export default (app: Express): void => {
     console.error('ERROR', req.method, req.path, err)
 
     if (err instanceof StatusError) {
-      res.status(err.statusCode).json({ errorMessages: [err.message] })
+      res.status(err.statusCode).json([{ path: [err.name], message: [err.message] }])
     }
 
     if (err.name === 'UnauthorizedError') {

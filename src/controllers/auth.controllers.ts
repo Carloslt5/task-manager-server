@@ -13,23 +13,19 @@ export class StatusError extends Error {
 
 const signup: AsyncRequestHandler = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body
-  console.log('en el endpoint')
-  // try {
-  //   await User.create({ firstName, lastName, email, password })
-  //   res.status(201).json({ message: 'User created' })
-  // } catch (error) {
-  //   next(new StatusError('Bad request. Please check your input data', 400))
-  // }
+
+  try {
+    await User.create({ firstName, lastName, email, password })
+    res.status(201).json({ message: 'User created' })
+  } catch (error) {
+    next(error)
+  }
 }
 
 const login: AsyncRequestHandler = async (req, res, next) => {
   const { email, password } = req.body
 
   try {
-    if (email === '' || password === '') {
-      throw new StatusError('Provide email and password', 401)
-    }
-
     const foundUser = await User.findOne({ email })
     if (foundUser === null) {
       throw new StatusError('User not found', 401)
@@ -39,7 +35,7 @@ const login: AsyncRequestHandler = async (req, res, next) => {
       const authToken = foundUser.signToken()
       res.status(200).json({ authToken })
     } else {
-      throw new StatusError('Unable to authenticate the user', 401)
+      throw new StatusError('Password incorrect', 401)
     }
   } catch (error) {
     next(error)
