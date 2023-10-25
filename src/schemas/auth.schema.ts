@@ -8,7 +8,7 @@ export const signUpSchema = z.object({
     password: z.string().min(4, 'Password requires a minimum of 4 characters').trim()
   })
 })
-// export type SignUpDataType = z.infer<typeof signUpSchema>['body']
+export type SignUpDataType = z.infer<typeof signUpSchema>['body']
 
 export const loginSchema = z.object({
   body: z.object({
@@ -16,3 +16,4 @@ export const loginSchema = z.object({
     password: z.string().trim()
   })
 })
+export type LoginDataType = z.infer<typeof loginSchema>['body']

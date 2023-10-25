@@ -11,7 +11,6 @@ export const schemaValidation = (schema: AnyZodObject) => (req: Request, res: Re
     })
     next()
   } catch (error) {
-    console.log('llego aquii', error)
     if (error instanceof ZodError) {
       return res.status(400).json(error.issues.map((issue) => ({
         path: issue.path,

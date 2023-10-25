@@ -1,9 +1,10 @@
+import { type NextFunction, type Request, type Response } from 'express'
 import User, { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type LoginDataType, type SignUpDataType } from '../schemas/auth.schema'
 
 export class StatusError extends Error {
   statusCode: number
-
   constructor(message: string, statusCode: number) {
     super(message)
     this.name = 'StatusError'
@@ -11,7 +12,7 @@ export class StatusError extends Error {
   }
 }
 
-const signup: AsyncRequestHandler = async (req, res, next) => {
+const signup = async (req: Request<unknown, unknown, SignUpDataType>, res: Response, next: NextFunction): Promise<void> => {
   const { firstName, lastName, email, password } = req.body
 
   try {
@@ -22,7 +23,7 @@ const signup: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const login: AsyncRequestHandler = async (req, res, next) => {
+const login = async (req: Request<unknown, unknown, LoginDataType>, res: Response, next: NextFunction): Promise<void> => {
   const { email, password } = req.body
 
   try {
