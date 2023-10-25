@@ -10,7 +10,7 @@ const getKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) 
     const kanbanBoards = await KanbanBoard.find({ owner: _id }).populate('project')
     res.status(200).json(kanbanBoards)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
@@ -21,22 +21,23 @@ const getOneKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
     const kanbanBoard = await KanbanBoard.findById(kanbanBoardId).populate('project')
     res.status(200).json(kanbanBoard)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
 const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
   const _id = req.payload?._id
-  const { title, description } = req.body
+  const { title } = req.body
 
   try {
-    const kanbanboard = await KanbanBoard.create({ title, description, owner: _id })
+    const kanbanboard = await KanbanBoard.create({ title, owner: _id })
     if (kanbanboard === null) {
       res.status(500).json({ message: 'Error can not Create' })
+    } else {
+      res.status(201).json(kanbanboard)
     }
-    res.status(201).json(kanbanboard)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
@@ -48,10 +49,11 @@ const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
     const kanbanBoardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title } }, { new: true })
     if (kanbanBoardUpdated === null) {
       res.status(500).json({ message: 'Error can not Update' })
+    } else {
+      res.status(201).json(kanbanBoardUpdated)
     }
-    res.status(200).json(kanbanBoardUpdated)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 

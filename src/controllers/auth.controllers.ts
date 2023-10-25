@@ -16,8 +16,12 @@ const signup = async (req: Request<unknown, unknown, SignUpDataType>, res: Respo
   const { firstName, lastName, email, password } = req.body
 
   try {
-    await User.create({ firstName, lastName, email, password })
-    res.status(201).json({ message: 'User created' })
+    const createUser = await User.create({ firstName, lastName, email, password })
+    if (createUser === null) {
+      res.status(422).json({ message: 'Error: Unable to create user' })
+    } else {
+      res.status(201).json({ message: 'User created' })
+    }
   } catch (error) {
     next(error)
   }

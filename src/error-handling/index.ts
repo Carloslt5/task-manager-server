@@ -9,6 +9,8 @@ export default (app: Express): void => {
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error('ERROR', req.method, req.path, err)
 
+    console.log('------>', err)
+
     if (err instanceof StatusError) {
       res.status(err.statusCode).json([{ path: [err.name], message: [err.message] }])
     }
