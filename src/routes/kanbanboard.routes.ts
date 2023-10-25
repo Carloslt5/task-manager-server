@@ -9,7 +9,7 @@ const router = express.Router()
 router.get('/getKanbanBoard', isAuthenticated, getKanbanBoard)
 router.get('/getOneKanbanBoard/:kanbanBoardId', isAuthenticated, getOneKanbanBoard)
 router.post('/createKanbanBoard', schemaValidation(kanbanSchema), isAuthenticated, createKanbanBoard)
-router.put('/updateKanbanBoard/:KanbanBoardId', isAuthenticated, updateKanbanBoard)
+router.put('/updateKanbanBoard/:KanbanBoardId', schemaValidation(kanbanSchema), isAuthenticated, updateKanbanBoard)
 router.put('/addProjectToKanban/:KanbanBoardId', isAuthenticated, addProjectToKanban)
 router.delete('/deleteKanbanBoard/:KanbanBoardId', isAuthenticated, deleteKanbanBoard)
 

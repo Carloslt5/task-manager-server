@@ -43,7 +43,7 @@ const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, nex
 
 const updateKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
   const { KanbanBoardId } = req.params
-  const { title }: { title?: string } = req.body
+  const { title } = req.body
 
   try {
     const kanbanBoardUpdated = await KanbanBoard.findByIdAndUpdate({ _id: KanbanBoardId }, { $set: { title } }, { new: true })
@@ -67,14 +67,16 @@ const addProjectToKanban: AsyncRequestHandler = async (req, res, next) => {
       KanbanBoard.findByIdAndUpdate(KanbanBoardId, { $addToSet: { project: projectId } }, { new: true })
     ])
     if (project === null) {
-      res.status(500).json({ message: 'Project not found' })
+      res.status(400).json({ message: 'Project not found' })
+      return
     }
     if (kanbanBoardUpdated === null) {
-      res.status(500).json({ message: 'Kanban Board not found' })
+      res.status(400).json({ message: 'Kanban Board not found' })
+      return
     }
     res.status(201).json(kanbanBoardUpdated)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
