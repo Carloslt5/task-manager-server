@@ -1,6 +1,16 @@
 import User, { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
+export class StatusError extends Error {
+  statusCode: number
+
+  constructor(message: string, statusCode: number) {
+    super(message)
+    this.name = 'StatusError'
+    this.statusCode = statusCode
+  }
+}
+
 const signup: AsyncRequestHandler = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body
 
@@ -8,33 +18,31 @@ const signup: AsyncRequestHandler = async (req, res, next) => {
     await User.create({ firstName, lastName, email, password })
     res.status(201).json({ message: 'User created' })
   } catch (error) {
-    res.status(400).json({ success: false, error })
+    next(new StatusError('Bad request. Please check your input data', 400))
   }
 }
 
 const login: AsyncRequestHandler = async (req, res, next) => {
   const { email, password } = req.body
 
-  if (email === '' || password === '') {
-    res.status(400).json({ errorMessages: ['Provide email and password.'] })
-  }
-
   try {
-    const foundUser = await User.findOne({ email })
+    if (email === '' || password === '') {
+      throw new StatusError('Provide email and password', 401)
+    }
 
+    const foundUser = await User.findOne({ email })
     if (foundUser === null) {
-      res.status(401).json({ errorMessages: ['User not found.'] })
-      return
+      throw new StatusError('User not found', 401)
     }
 
     if (foundUser.validatePassword(password)) {
       const authToken = foundUser.signToken()
       res.status(200).json({ authToken })
     } else {
-      res.status(401).json({ errorMessages: ['Unable to authenticate the user'] })
+      throw new StatusError('Unable to authenticate the user', 401)
     }
   } catch (error) {
-    res.status(400).json({ success: false, error })
+    next(error)
   }
 }
 
