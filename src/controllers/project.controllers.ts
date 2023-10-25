@@ -10,7 +10,7 @@ const getAllProject: AsyncRequestHandler<UserPayload> = async (req, res, next) =
     const projects = await Project.find({ owner: _id })
     res.status(200).json(projects)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 const getOneProject: AsyncRequestHandler = async (req, res, next) => {
@@ -20,7 +20,7 @@ const getOneProject: AsyncRequestHandler = async (req, res, next) => {
     const project = await Project.findById(projectId).populate('state')
     res.status(200).json(project)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
@@ -32,9 +32,13 @@ const createProject: AsyncRequestHandler<UserPayload> = async (req, res, next) =
   try {
     const createProject = await Project.create({ title, description, owner: _id })
     const kanbanBoard = await Kanbanboard.findByIdAndUpdate(kanbanBoardId, { $push: { project: createProject } }, { new: true })
-    res.status(200).json({ createProject, kanbanBoard })
+    if (createProject === null || kanbanBoard === null) {
+      res.status(422).json({ message: 'Project not created' })
+    } else {
+      res.status(201).json({ createProject, kanbanBoard })
+    }
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
