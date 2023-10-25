@@ -13,13 +13,13 @@ export class StatusError extends Error {
 
 const signup: AsyncRequestHandler = async (req, res, next) => {
   const { firstName, lastName, email, password } = req.body
-
-  try {
-    await User.create({ firstName, lastName, email, password })
-    res.status(201).json({ message: 'User created' })
-  } catch (error) {
-    next(new StatusError('Bad request. Please check your input data', 400))
-  }
+  console.log('en el endpoint')
+  // try {
+  //   await User.create({ firstName, lastName, email, password })
+  //   res.status(201).json({ message: 'User created' })
+  // } catch (error) {
+  //   next(new StatusError('Bad request. Please check your input data', 400))
+  // }
 }
 
 const login: AsyncRequestHandler = async (req, res, next) => {
