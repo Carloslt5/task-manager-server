@@ -1,7 +1,9 @@
+import { type NextFunction, type Request, type Response } from 'express'
 import Ticket from '../models/Ticket.model'
 import ToDo from '../models/ToDo.model'
 import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type TicketBodyType, type TicketParamsType } from '../schemas/ticket.schema'
 
 const getTicket: AsyncRequestHandler = async (req, res, next) => {
   try {
@@ -25,7 +27,7 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
   }
 }
 
-const updateTicketDetails: AsyncRequestHandler = async (req, res, next) => {
+const updateTicketDetails = async (req: Request<TicketParamsType, unknown, TicketBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const { ticketID } = req.params
   const { title, description, priority } = req.body
 

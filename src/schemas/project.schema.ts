@@ -9,5 +9,14 @@ export const projectSchema = z.object({
   })
 })
 
+export const updateProjectSchema = z.object({
+  body: z.object({
+    title: z.string().min(5, 'Title requires a minimum of 5 characters').trim()
+  }),
+  params: z.object({
+    projectId: z.string()
+  })
+})
+
 export type ProjectParamsType = z.infer<typeof projectSchema>['params']
 export type ProjectBodyType = z.infer<typeof projectSchema>['body']
