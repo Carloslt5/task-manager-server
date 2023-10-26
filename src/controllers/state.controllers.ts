@@ -1,6 +1,5 @@
 import Project from '../models/Project.model'
 import State from '../models/State.model'
-import Ticket from '../models/Ticket.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 const getStates: AsyncRequestHandler = async (req, res, next) => {
@@ -42,13 +41,12 @@ const deleteState: AsyncRequestHandler = async (req, res, next) => {
   const { stateId } = req.params
 
   try {
-    await Ticket.deleteMany({ state: stateId })
     await State.findByIdAndDelete(stateId)
     await Project.findOneAndUpdate(
       { state: stateId },
       { $pull: { state: stateId } }
     )
-    res.status(200).json({ success: true })
+    res.status(200).json({ message: 'State deleted' })
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
