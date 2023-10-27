@@ -10,7 +10,7 @@ const getTicket: AsyncRequestHandler = async (req, res, next) => {
     const tickets = await Ticket.find().populate('state').populate('project')
     res.status(200).json(tickets)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
@@ -23,7 +23,7 @@ const createdTicket: AsyncRequestHandler<UserPayload> = async (req, res, next) =
     const createdTicket = await Ticket.create({ title, description, priority, project: projectId, state: stateId, owner: _id })
     res.status(200).json(createdTicket)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
@@ -35,7 +35,7 @@ const updateTicketDetails = async (req: Request<TicketParamsType, unknown, Ticke
     const updateTickettTitle = await Ticket.findByIdAndUpdate(ticketID, { title, description, priority }, { new: true })
     res.status(200).json(updateTickettTitle)
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
 
@@ -46,7 +46,7 @@ const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
     const newStateTicket = await Ticket.findByIdAndUpdate(ticketId, { state: stateId }, { new: true })
     res.status(200).json(newStateTicket)
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
 
@@ -59,7 +59,7 @@ const deleteTicket: AsyncRequestHandler = async (req, res, next) => {
     await Ticket.deleteMany({ state: stateID })
     res.status(200).json({ message: 'Todo deleted' })
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 }
 
