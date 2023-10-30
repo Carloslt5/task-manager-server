@@ -1,19 +1,21 @@
+import { type NextFunction, type Request, type Response } from 'express'
 import Project from '../models/Project.model'
 import State from '../models/State.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type StateParamsType, type StateBodyType } from '../schemas/state.schema'
 
-const getStates: AsyncRequestHandler = async (req, res, next) => {
+const getStates = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
+
   try {
     const states = await State.find({ project: projectId }).populate('project')
-    console.log('esto', states)
     res.status(200).json(states)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
-const createState: AsyncRequestHandler = async (req, res, next) => {
+const createState = async (req: Request<StateParamsType, unknown, StateBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
   const { stateName } = req.body
 
@@ -22,7 +24,7 @@ const createState: AsyncRequestHandler = async (req, res, next) => {
     const updateProject = await Project.findByIdAndUpdate(projectId, { $addToSet: { state: createdStates } }, { new: true })
     res.status(200).json(updateProject)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
@@ -33,11 +35,11 @@ const editState: AsyncRequestHandler = async (req, res, next) => {
     const updateState = await State.findByIdAndUpdate(stateId, { stateName }, { new: true })
     res.status(200).json(updateState)
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 
-const deleteState: AsyncRequestHandler = async (req, res, next) => {
+const deleteState = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { stateId } = req.params
 
   try {
