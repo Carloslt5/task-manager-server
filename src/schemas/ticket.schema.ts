@@ -24,6 +24,16 @@ export const createTicketSchema = z.object({
   })
 })
 
+export const updateTicketSchema = z.object({
+  body: z.object({
+    title: z.string().min(5, 'Title requires a minimum of 5 characters').trim().optional(),
+    description: z.string().min(15, 'Description requires a minimum of 15 characters').trim().optional(),
+    priority: z.string().refine(value => ['Low', 'Medium', 'High'].includes(value), {
+      message: 'Priority must be "low", "medium", or "high"'
+    }).optional()
+  })
+})
+
 export const paramsTicketSchema = z.object({
   params: z.object({
     ticketID: z.string()
