@@ -6,8 +6,10 @@ import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import { type TicketBodyType, type TicketParamsType } from '../schemas/ticket.schema'
 
 const getTicket: AsyncRequestHandler = async (req, res, next) => {
+  const { projectId } = req.params
+
   try {
-    const tickets = await Ticket.find().populate('state').populate('project')
+    const tickets = await Ticket.find({ project: projectId }).populate('state').populate('project')
     res.status(200).json(tickets)
   } catch (error) {
     next(error)

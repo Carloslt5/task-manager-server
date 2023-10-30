@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const createStateSchema = z.object({
   body: z.object({
-    stateName: z.number().min(3, 'State name requires a minimum of 3 characters')
+    stateName: z.string().min(3, 'State name requires a minimum of 3 characters')
   }),
   params: z.object({
     projectId: z.string()
