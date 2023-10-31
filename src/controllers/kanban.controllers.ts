@@ -1,11 +1,10 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { type NextFunction, type Response } from 'express'
 import KanbanBoard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
-import { type UserPayload } from '../models/User.model'
-import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
-import { type KanbanBodyType, type KanbanParamsType } from '../schemas/kanban.schema'
+import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
+import { type AddProjectToKanbanBodyType, type KanbanBodyType, type KanbanParamsType } from '../schemas/kanban.schema'
 
-const getKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const getKanbanBoard = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const _id = req.payload?._id
 
   try {
@@ -16,7 +15,7 @@ const getKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) 
   }
 }
 
-const getOneKanbanBoard = async (req: Request<KanbanParamsType, unknown, unknown>, res: Response, next: NextFunction): Promise<void> => {
+const getOneKanbanBoard = async (req: PayloadRequest<KanbanParamsType, unknown, unknown>, res: Response, next: NextFunction): Promise<void> => {
   const { kanbanBoardId } = req.params
 
   try {
@@ -31,7 +30,7 @@ const getOneKanbanBoard = async (req: Request<KanbanParamsType, unknown, unknown
   }
 }
 
-const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const createKanbanBoard = async (req: PayloadRequest<KanbanParamsType, unknown, KanbanBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const _id = req.payload?._id
   const { title } = req.body
 
@@ -47,7 +46,7 @@ const createKanbanBoard: AsyncRequestHandler<UserPayload> = async (req, res, nex
   }
 }
 
-const updateKanbanBoard = async (req: Request<KanbanParamsType, unknown, KanbanBodyType>, res: Response, next: NextFunction): Promise<void> => {
+const updateKanbanBoard = async (req: PayloadRequest<KanbanParamsType, unknown, KanbanBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const { kanbanBoardId } = req.params
   const { title } = req.body
 
@@ -63,7 +62,7 @@ const updateKanbanBoard = async (req: Request<KanbanParamsType, unknown, KanbanB
   }
 }
 
-const addProjectToKanban: AsyncRequestHandler = async (req, res, next) => {
+const addProjectToKanban = async (req: PayloadRequest<KanbanParamsType, unknown, AddProjectToKanbanBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const { kanbanBoardId } = req.params
   const { projectId } = req.body
 
@@ -86,7 +85,7 @@ const addProjectToKanban: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const deleteKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
+const deleteKanbanBoard = async (req: PayloadRequest<KanbanParamsType>, res: Response, next: NextFunction): Promise<void> => {
   const { kanbanBoardId } = req.params
 
   try {
@@ -96,7 +95,7 @@ const deleteKanbanBoard: AsyncRequestHandler = async (req, res, next) => {
     }
     res.status(200).json({ message: 'Kanban Card is deleted' })
   } catch (error) {
-    res.status(500).json({ success: false, error })
+    next(error)
   }
 }
 

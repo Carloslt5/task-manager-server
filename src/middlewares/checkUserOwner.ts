@@ -1,7 +1,8 @@
-import { type AsyncRequestHandler } from '../controllers/Types/AsyncRequestHandler.Type'
-import User, { type UserPayload } from '../models/User.model'
+import { type NextFunction, type Response } from 'express'
+import { type PayloadRequest } from '../controllers/Types/AsyncRequestHandler.Type'
+import User from '../models/User.model'
 
-const checkUserOwner: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const checkUserOwner = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const userId = req.payload?._id
   const { id: profileId } = req.params
 
@@ -11,13 +12,13 @@ const checkUserOwner: AsyncRequestHandler<UserPayload> = async (req, res, next) 
       if (count > 0) {
         next()
       } else {
-        res.status(401).json({ errorMessages: ['No eres el dueño de este perfil'] })
+        res.status(401).json({ messages: ['No eres el dueño de este perfil'] })
       }
     } catch (error) {
       next(error)
     }
   } else {
-    res.status(400).json({ errorMessages: ['Parámetros inválidos'] })
+    res.status(400).json({ messages: ['Parámetros inválidos'] })
   }
 }
 

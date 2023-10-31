@@ -2,6 +2,15 @@ import { type Request } from 'express'
 import { type TokenGetter, expressjwt } from 'express-jwt'
 import { type Secret } from 'jsonwebtoken'
 
+// export interface CustomRequest<
+//   P = ParamsDictionary,
+//   ResBody = any,
+//   ReqBody = any,
+//   ReqQuery = Query,
+// > extends Request<P, ResBody, ReqBody, ReqQuery> {
+//   payload: UserPayload
+// }
+
 const isAuthenticated = expressjwt({
   secret: process.env.TOKEN_SECRET as Secret,
   algorithms: ['HS256'],

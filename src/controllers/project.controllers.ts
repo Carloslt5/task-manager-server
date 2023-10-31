@@ -5,7 +5,7 @@ import { type UserPayload } from '../models/User.model'
 import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import { type ProjectBodyType, type ProjectParamsType } from '../schemas/project.schema'
 
-const getAllProject: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const getAllProject: AsyncRequestHandler = async (req, res, next) => {
   const _id = req.payload?._id
 
   try {
@@ -35,7 +35,7 @@ const getOneProject = async (req: Request<ProjectParamsType, unknown, ProjectBod
   }
 }
 
-const createProject: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const createProject: AsyncRequestHandler = async (req, res, next) => {
   const _id = req.payload?._id
   const { kanbanBoardId } = req.params
   const { title, description } = req.body

@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import User, { type UserPayload } from '../models/User.model'
-import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import User from '../models/User.model'
 import { type LoginDataType, type SignUpDataType } from '../schemas/auth.schema'
+import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 
 export class StatusError extends Error {
   statusCode: number
@@ -18,7 +18,7 @@ const signup = async (req: Request<unknown, unknown, SignUpDataType>, res: Respo
   try {
     const createUser = await User.create({ firstName, lastName, email, password })
     if (createUser === null) {
-      res.status(422).json({ message: 'Error: Unable to create user' })
+      throw new StatusError('Error: Unable to create user', 422)
     } else {
       res.status(201).json({ message: 'User created' })
     }
@@ -47,7 +47,7 @@ const login = async (req: Request<unknown, unknown, LoginDataType>, res: Respons
   }
 }
 
-const verify: AsyncRequestHandler<UserPayload> = async (req, res, next) => {
+const verify = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     res.status(200).json(req.payload)
   } catch (error) {
