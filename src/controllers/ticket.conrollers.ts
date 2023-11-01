@@ -1,12 +1,11 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { type NextFunction, type Response } from 'express'
 import Ticket from '../models/Ticket.model'
 import ToDo from '../models/ToDo.model'
-import { type UserPayload } from '../models/User.model'
-import { type PayloadRequest, type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type TicketBodyType, type TicketParamsType } from '../schemas/ticket.schema'
 import { StatusError } from './auth.controllers'
 
-const getTicket: AsyncRequestHandler = async (req, res, next) => {
+const getTicket = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
 
   try {
@@ -17,7 +16,7 @@ const getTicket: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const createdTicket: AsyncRequestHandler = async (req, res, next) => {
+const createdTicket = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const _id = req.payload?._id
   const { projectId } = req.params
   const { stateId, newTicket: { title, description, priority } } = req.body
@@ -30,7 +29,7 @@ const createdTicket: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const updateTicketDetails = async (req: Request<TicketParamsType, unknown, TicketBodyType>, res: Response, next: NextFunction): Promise<void> => {
+const updateTicketDetails = async (req: PayloadRequest<TicketParamsType, unknown, TicketBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const { ticketID } = req.params
   const { title, description, priority } = req.body
 
@@ -42,7 +41,7 @@ const updateTicketDetails = async (req: Request<TicketParamsType, unknown, Ticke
   }
 }
 
-const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
+const updateStateTicket = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { ticketId, stateId } = req.body
 
   try {
@@ -55,13 +54,13 @@ const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
 
 const deleteTicket = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { ticketId } = req.params
-  const { stateID } = req.body
 
   try {
     await ToDo.deleteMany({ ticket: ticketId })
-    await Ticket.deleteMany({ state: stateID })
+    await Ticket.findByIdAndRemove({ _id: ticketId })
+    res.status(200).json({ message: 'Ticket deleted' })
   } catch (error) {
-    next(error)
+    next(new StatusError('Ticket can not delete', 422))
   }
 }
 
