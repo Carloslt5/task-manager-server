@@ -13,7 +13,8 @@ export type SignUpDataType = z.infer<typeof signUpSchema>['body']
 export const loginSchema = z.object({
   body: z.object({
     email: z.string().email('Provide email and password').trim(),
-    password: z.string().trim()
+    password: z.string().refine(value => value.length > 1, { message: 'Provide password' })
   })
 })
+
 export type LoginDataType = z.infer<typeof loginSchema>['body']
