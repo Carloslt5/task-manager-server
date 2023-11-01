@@ -2,8 +2,9 @@ import { type NextFunction, type Request, type Response } from 'express'
 import Ticket from '../models/Ticket.model'
 import ToDo from '../models/ToDo.model'
 import { type UserPayload } from '../models/User.model'
-import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type PayloadRequest, type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 import { type TicketBodyType, type TicketParamsType } from '../schemas/ticket.schema'
+import { StatusError } from './auth.controllers'
 
 const getTicket: AsyncRequestHandler = async (req, res, next) => {
   const { projectId } = req.params
@@ -52,14 +53,16 @@ const updateStateTicket: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const deleteTicket: AsyncRequestHandler = async (req, res, next) => {
+const deleteTicket = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { ticketId } = req.params
   const { stateID } = req.body
 
   try {
-    await ToDo.deleteMany({ ticket: ticketId })
-    await Ticket.deleteMany({ state: stateID })
-    res.status(200).json({ message: 'Todo deleted' })
+    const deleteToDos = await ToDo.deleteMany({ ticket: ticketId })
+    const deleteTickets = await Ticket.deleteMany({ state: stateID })
+    if (deleteToDos === null || deleteTickets === null) {
+      throw new StatusError('Error: Can not deleted Content', 404)
+    }
   } catch (error) {
     next(error)
   }

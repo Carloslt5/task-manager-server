@@ -10,5 +10,3 @@ export type PayloadRequest<
 > = Request<P, ResBody, ReqBody, ReqQuery> & {
   payload?: UserPayload
 }
-
-// export type AsyncRequestHandler<P = ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = Query> = (req: PayloadRequest<P, ResBody, ReqBody, ReqQuery>, res: Response, next: NextFunction) => Promise<void>
