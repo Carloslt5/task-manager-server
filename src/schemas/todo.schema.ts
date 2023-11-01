@@ -11,3 +11,5 @@ export const createToDoSchema = z.object({
     id: z.string()
   })
 })
+
+export type ToDoBodyType = z.infer<typeof createToDoSchema>['body']

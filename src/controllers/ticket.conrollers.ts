@@ -58,11 +58,8 @@ const deleteTicket = async (req: PayloadRequest, res: Response, next: NextFuncti
   const { stateID } = req.body
 
   try {
-    const deleteToDos = await ToDo.deleteMany({ ticket: ticketId })
-    const deleteTickets = await Ticket.deleteMany({ state: stateID })
-    if (deleteToDos === null || deleteTickets === null) {
-      throw new StatusError('Error: Can not deleted Content', 404)
-    }
+    await ToDo.deleteMany({ ticket: ticketId })
+    await Ticket.deleteMany({ state: stateID })
   } catch (error) {
     next(error)
   }

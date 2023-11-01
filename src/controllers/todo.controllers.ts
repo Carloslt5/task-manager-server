@@ -1,6 +1,8 @@
 import ToDo from '../models/ToDo.model'
+import { type ToDoBodyType } from '../schemas/todo.schema'
 import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type Response, type NextFunction } from 'express'
+import { StatusError } from './auth.controllers'
 
 const getAllTodos = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const userId = req.payload?._id
@@ -24,15 +26,22 @@ const getTicketToDos = async (req: PayloadRequest, res: Response, next: NextFunc
   }
 }
 
-const createdTodo = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
+const createdTodo = async (req: PayloadRequest<unknown, unknown, ToDoBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const userId = req.payload?._id
   const { newTodo: { title }, ticketID } = req.body
 
   try {
     const userTodos = await ToDo.find({ owner: userId })
-    let order = 0
-    if (userTodos.length > 0) { order = userTodos.length }
-    await ToDo.create({ title, owner: userId, order, ticket: ticketID })
+    if (userTodos === null) {
+      throw new StatusError('Error: User not found', 404)
+    }
+
+    const order = userTodos.length
+    const createdToDo = await ToDo.create({ title, owner: userId, order, ticket: ticketID })
+    if (createdToDo === null) {
+      throw new StatusError('Error: To Do cant not created', 422)
+    }
+
     res.status(200).json({ message: 'Todo Created' })
   } catch (error) {
     next(error)
@@ -65,8 +74,11 @@ const deleteTodo = async (req: PayloadRequest, res: Response, next: NextFunction
   const { todoID } = req.params
 
   try {
-    await ToDo.findByIdAndDelete(todoID)
-    res.status(200).json({ message: 'Todo deleted' })
+    const deleteToDo = await ToDo.findByIdAndDelete(todoID)
+    if (deleteToDo === null) {
+      throw new StatusError('Error: Can not delete To Do', 422)
+    }
+    res.status(200).json({ message: 'To Do deleted' })
   } catch (error) {
     next(error)
   }
