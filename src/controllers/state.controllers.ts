@@ -1,8 +1,10 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import Project from '../models/Project.model'
 import State from '../models/State.model'
-import { type AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
+import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type StateParamsType, type StateBodyType } from '../schemas/state.schema'
+import Ticket from '../models/Ticket.model'
+import ToDo from '../models/ToDo.model'
 
 const getStates = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
@@ -28,7 +30,7 @@ const createState = async (req: Request<StateParamsType, unknown, StateBodyType>
   }
 }
 
-const editState: AsyncRequestHandler = async (req, res, next) => {
+const editState = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { _id: stateId, stateName } = req.body
 
   try {
@@ -39,10 +41,14 @@ const editState: AsyncRequestHandler = async (req, res, next) => {
   }
 }
 
-const deleteState = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const deleteState = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { stateId } = req.params
 
   try {
+    const tickets = await Ticket.find({ state: stateId })
+    const ticketIds = tickets.map(ticket => ticket._id)
+    await ToDo.deleteMany({ ticket: { $in: ticketIds } })
+    await Ticket.deleteMany({ state: stateId })
     await State.findByIdAndDelete(stateId)
     await Project.findOneAndUpdate(
       { state: stateId },
