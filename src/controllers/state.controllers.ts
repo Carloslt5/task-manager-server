@@ -1,12 +1,12 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { type NextFunction, type Response } from 'express'
 import Project from '../models/Project.model'
 import State from '../models/State.model'
-import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type StateParamsType, type StateBodyType } from '../schemas/state.schema'
 import Ticket from '../models/Ticket.model'
 import ToDo from '../models/ToDo.model'
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
 
-const getStates = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const getStates = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
 
   try {
@@ -17,7 +17,7 @@ const getStates = async (req: Request, res: Response, next: NextFunction): Promi
   }
 }
 
-const createState = async (req: Request<StateParamsType, unknown, StateBodyType>, res: Response, next: NextFunction): Promise<void> => {
+const createState = async (req: PayloadRequest<StateParamsType, unknown, StateBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
   const { stateName } = req.body
 

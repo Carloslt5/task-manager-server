@@ -1,9 +1,9 @@
 import { type NextFunction, type Response } from 'express'
 import Ticket from '../models/Ticket.model'
 import ToDo from '../models/ToDo.model'
-import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type TicketBodyType, type TicketParamsType } from '../schemas/ticket.schema'
 import { StatusError } from './auth.controllers'
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
 
 const getTicket = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params

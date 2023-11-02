@@ -10,7 +10,6 @@ router.get('/getKanbanBoard', isAuthenticated, getKanbanBoard)
 router.get('/getOneKanbanBoard/:kanbanBoardId', isAuthenticated, getOneKanbanBoard)
 router.post('/createKanbanBoard', schemaValidation(createKanbanSchema), isAuthenticated, createKanbanBoard)
 router.put('/updateKanbanBoard/:kanbanBoardId', schemaValidation(kanbanSchema), isAuthenticated, updateKanbanBoard)
-// router.put('/addProjectToKanban/:kanbanBoardId', isAuthenticated, addProjectToKanban)
 router.delete('/deleteKanbanBoard/:kanbanBoardId', isAuthenticated, deleteKanbanBoard)
 
 export default router

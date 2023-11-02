@@ -1,8 +1,8 @@
 import { type NextFunction, type Response } from 'express'
 import KanbanBoard from '../models/KanbanBoard.model'
-import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type KanbanBodyType, type KanbanParamsType } from '../schemas/kanban.schema'
 import { StatusError } from './auth.controllers'
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
 
 const getKanbanBoard = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const _id = req.payload?._id
@@ -66,28 +66,6 @@ const updateKanbanBoard = async (req: PayloadRequest<KanbanParamsType, unknown, 
   }
 }
 
-// const addProjectToKanban = async (req: PayloadRequest<KanbanParamsType, unknown, AddProjectToKanbanBodyType>, res: Response, next: NextFunction): Promise<void> => {
-//   const { kanbanBoardId } = req.params
-//   const { projectId } = req.body
-
-//   try {
-//     const [project, kanbanBoardUpdated] = await Promise.all([
-//       Project.findById(projectId),
-//       KanbanBoard.findByIdAndUpdate(kanbanBoardId, { $addToSet: { project: projectId } }, { new: true })
-//     ])
-//     if (project === null) {
-//       throw new StatusError('Error: Project not found', 404)
-//     }
-//     if (kanbanBoardUpdated === null) {
-//       res.status(400).json({ message: 'Kanban Board not found' })
-//       throw new StatusError('Error: Project not found', 404)
-//     }
-//     res.status(201).json(kanbanBoardUpdated)
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
 const deleteKanbanBoard = async (req: PayloadRequest<KanbanParamsType>, res: Response, next: NextFunction): Promise<void> => {
   const { kanbanBoardId } = req.params
 
@@ -107,6 +85,5 @@ export {
   getOneKanbanBoard,
   createKanbanBoard,
   updateKanbanBoard,
-  // addProjectToKanban,
   deleteKanbanBoard
 }

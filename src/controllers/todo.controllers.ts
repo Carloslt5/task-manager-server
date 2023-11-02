@@ -1,8 +1,8 @@
 import ToDo from '../models/ToDo.model'
 import { type ToDoBodyType } from '../schemas/todo.schema'
-import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type Response, type NextFunction } from 'express'
 import { StatusError } from './auth.controllers'
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
 
 const getAllTodos = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const userId = req.payload?._id

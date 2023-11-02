@@ -1,24 +1,12 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { type NextFunction, type Response } from 'express'
 import Kanbanboard from '../models/KanbanBoard.model'
 import Project from '../models/Project.model'
-import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
 import { type CreateProjectParamsType, type ProjectBodyType, type ProjectParamsType } from '../schemas/project.schema'
 import { StatusError } from './auth.controllers'
-
-// const getAllProject = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-//   const _id = req.payload?._id
-
-//   try {
-//     const projects = await Project.find({ owner: _id })
-//     if (projects === null) {
-//       throw new StatusError('Error: Projects Board not found', 404)
-//     } else {
-//       res.status(200).json(projects)
-//     }
-//   } catch (error) {
-//     next(error)
-//   }
-// }
+import State from '../models/State.model'
+import Ticket from '../models/Ticket.model'
+import ToDo from '../models/ToDo.model'
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
 
 const getOneProject = async (req: PayloadRequest<ProjectParamsType, unknown, ProjectBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
@@ -86,23 +74,27 @@ const updateOrderSates = async (req: PayloadRequest, res: Response, next: NextFu
   }
 }
 
-const deleteProject = async (req: Request<ProjectParamsType, unknown, unknown>, res: Response, next: NextFunction): Promise<void> => {
+const deleteProject = async (req: PayloadRequest<ProjectParamsType, unknown, unknown>, res: Response, next: NextFunction): Promise<void> => {
   const { projectId } = req.params
 
   try {
-    const deletedProject = await Project.findByIdAndRemove(projectId)
-    if (deletedProject === null) {
-      throw new StatusError('Error: Project can not deleted', 404)
-    } else {
-      res.status(200).json({ message: 'Project is deleted' })
-    }
+    const [project] = await Project.find({ _id: projectId })
+    const projectStateIDs = project.state.map(state => state._id)
+    const tickets = await Ticket.find({ state: projectStateIDs })
+    const ticketIDs = tickets.map(ticket => ticket._id)
+
+    await ToDo.deleteMany({ ticket: { $in: ticketIDs } })
+    await Ticket.deleteMany({ project: projectId })
+    await State.deleteMany({ _id: { $in: projectStateIDs } })
+    await Project.findByIdAndDelete({ _id: projectId })
+
+    res.status(200).json({ message: 'Project is deleted' })
   } catch (error) {
     next(error)
   }
 }
 
 export {
-  // getAllProject,
   getOneProject,
   createProject,
   updateProject,

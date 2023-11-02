@@ -6,7 +6,6 @@ import { createProjectSchema, updateProjectSchema } from '../schemas/project.sch
 
 const router = express.Router()
 
-// router.get('/getAllProject', isAuthenticated, getAllProject)
 router.get('/getOneProject/:projectId', isAuthenticated, getOneProject)
 router.post('/createProject/:kanbanBoardId', schemaValidation(createProjectSchema), isAuthenticated, createProject)
 router.put('/updateProject/:projectId', schemaValidation(updateProjectSchema), isAuthenticated, updateProject)

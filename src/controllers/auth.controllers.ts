@@ -1,7 +1,7 @@
-import { type NextFunction, type Request, type Response } from 'express'
+import { type NextFunction, type Response } from 'express'
 import User from '../models/User.model'
 import { type LoginDataType, type SignUpDataType } from '../schemas/auth.schema'
-import { type PayloadRequest } from './Types/AsyncRequestHandler.Type'
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
 
 export class StatusError extends Error {
   statusCode: number
@@ -12,7 +12,7 @@ export class StatusError extends Error {
   }
 }
 
-const signup = async (req: Request<unknown, unknown, SignUpDataType>, res: Response, next: NextFunction): Promise<void> => {
+const signup = async (req: PayloadRequest<unknown, unknown, SignUpDataType>, res: Response, next: NextFunction): Promise<void> => {
   const { firstName, lastName, email, password } = req.body
 
   try {
@@ -27,7 +27,7 @@ const signup = async (req: Request<unknown, unknown, SignUpDataType>, res: Respo
   }
 }
 
-const login = async (req: Request<unknown, unknown, LoginDataType>, res: Response, next: NextFunction): Promise<void> => {
+const login = async (req: PayloadRequest<unknown, unknown, LoginDataType>, res: Response, next: NextFunction): Promise<void> => {
   const { email, password } = req.body
 
   try {
