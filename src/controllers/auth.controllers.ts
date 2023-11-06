@@ -1,4 +1,4 @@
-import { type NextFunction, type Response } from 'express'
+import { type Request, type NextFunction, type Response } from 'express'
 import User from '../models/User.model'
 import { type LoginDataType, type SignUpDataType } from '../schemas/auth.schema'
 import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
@@ -55,8 +55,13 @@ const verify = async (req: PayloadRequest, res: Response, next: NextFunction): P
   }
 }
 
+const testController = (req: Request, res: Response): void => {
+  res.status(200).json({ message: 'todo ok' })
+}
+
 export {
   signup,
   login,
-  verify
+  verify,
+  testController
 }
