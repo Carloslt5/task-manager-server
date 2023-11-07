@@ -1,3 +1,4 @@
+
 const fs = require("fs");
 
 const swcConfig = JSON.parse(fs.readFileSync(`${__dirname}/.swcrc`, "utf-8"));
@@ -25,3 +26,4 @@ const config = {
 };
 
 module.exports = config;
+
