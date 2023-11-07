@@ -1,6 +1,6 @@
 import { type NextFunction, type Response } from 'express'
-import { type PayloadRequest } from '../controllers/Types/AsyncRequestHandler.Type'
 import User from '../models/User.model'
+import { type PayloadRequest } from './verifyToken.middleware'
 
 const checkUserOwner = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const userId = req.payload?._id
