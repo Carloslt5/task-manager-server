@@ -1,7 +1,6 @@
+const fs = require('fs')
 
-const fs = require("fs");
-
-const swcConfig = JSON.parse(fs.readFileSync(`${__dirname}/.swcrc`, "utf-8"));
+const swcConfig = JSON.parse(fs.readFileSync(`${__dirname}/.swcrc`, 'utf-8'))
 
 // Jest configuration
 // https://jestjs.io/docs/en/configuration
@@ -11,19 +10,22 @@ const config = {
 
   // Test all files either suffixed with "-test.js", "-test.jsx", "-test.ts", "-test.tsx", or
   // having ".test.js", ".test.jsx", ".test.ts", ".test.tsx" extensions
-  testRegex: ".*[-.]test\\.(js|ts)x?$",
+  testRegex: '.*[-.]test\\.(js|ts)x?$',
 
   setupFiles: [
     // Configure environment variables for the test environment
-    "<rootDir>/jest.setup.js",
+    '<rootDir>/jest.setup.js'
   ],
 
   transform: {
-    "^.+\\.(t|j)sx?$": ["@swc/jest", { ...swcConfig }],
+    '^.+\\.(t|j)sx?$': ['@swc/jest', { ...swcConfig }]
   },
   // File extensions to be tested
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-};
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/'
+  ]
+}
 
-module.exports = config;
-
+module.exports = config

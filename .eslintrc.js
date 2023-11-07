@@ -36,6 +36,6 @@ module.exports = {
       }
     ],
     "@typescript-eslint/space-before-function-paren": "off",
-
+    "n/no-path-concat": "off"
   }
 }

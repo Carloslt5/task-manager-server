@@ -1,20 +1,20 @@
-import "dotenv/config";
-import express from "express";
-import config from "./config";
-import errorHandling from "./error-handling";
-import routes from "./routes";
-import { connect } from "./db";
-import helmet from "helmet";
+import 'dotenv/config'
+import express from 'express'
+import config from './config'
+import errorHandling from './error-handling'
+import routes from './routes'
+import { connect } from './db'
+import helmet from 'helmet'
 
-connect();
+connect()
 
-const app = express();
+const app = express()
 
-config(app);
+config(app)
 
-app.use(helmet());
-app.use("/api", routes);
+app.use(helmet())
+app.use('/api', routes)
 
-errorHandling(app);
+errorHandling(app)
 
-export default app;
+export default app
