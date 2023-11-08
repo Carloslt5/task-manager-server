@@ -15,8 +15,12 @@ describe('Ticket Controller', () => {
 
   afterAll(async () => {
     // Closes the Mongoose connection
-    await mongoose.disconnect()
-    await mongoose.connection.close()
+    try {
+      await mongoose.disconnect()
+      await mongoose.connection.close()
+    } catch (error) {
+      console.error('Error al cerrar la conexión a la base de datos:', error)
+    }
   })
 
   test('getTicket return 200', async () => {

@@ -20,7 +20,7 @@ const signup = async (req: PayloadRequest<unknown, unknown, SignUpDataType>, res
     if (createUser === null) {
       throw new StatusError('Error: Unable to create user', 422)
     } else {
-      res.status(201).json({ message: 'User created' })
+      res.status(201).json(createUser)
     }
   } catch (error) {
     next(error)
