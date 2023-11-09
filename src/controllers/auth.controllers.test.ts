@@ -1,44 +1,40 @@
-import request from 'supertest'
-import mongoose from 'mongoose'
-import app from '../app'
-import { connect } from '../db'
+import { StatusError, signup } from './auth.controllers'
 import User from '../models/User.model'
 
-beforeEach(async () => {
-  await connect()
-})
+const mockUserTestData = {
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john.doe@example.com',
+  password: 'password123'
+}
 
-afterAll(async () => {
-  await mongoose.disconnect()
-})
+const req = {
+  body: mockUserTestData
+}
 
-describe('POST /api/auth/signup', () => {
-  afterEach(async () => {
-    await User.deleteMany({ email: 'test@email.com' })
+const res = {
+  status: jest.fn().mockReturnThis(),
+  json: jest.fn()
+}
+
+const next = jest.fn()
+
+jest.mock('../models/User.model')
+
+describe('signup function', () => {
+  it('should create a new user and respond with 201 status code', async () => {
+    await signup(req as any, res as any, next)
+
+    expect(User.create).toHaveBeenCalledWith(mockUserTestData)
+    expect(res.status).toHaveBeenCalledWith(201)
+    expect(next).not.toHaveBeenCalled()
   })
 
-  const userTestData = {
-    firstName: 'First NAme test',
-    lastName: 'Last Name test',
-    email: 'test@email.com',
-    password: 'testPassword'
-  }
+  it('should handle error when user creation returns null', async () => {
+    (User.create as jest.Mock).mockResolvedValue(null)
+    await signup(req as any, res as any, next)
 
-  test('should return 201', async () => {
-    const response = await request(app)
-      .post('/api/auth/signup')
-      .send(userTestData)
-
-    expect(response.status).toBe(201)
-    expect(response.headers['content-type']).toContain('json')
-  })
-
-  test('generate New User', async () => {
-    const response = await request(app)
-      .post('/api/auth/signup')
-      .send(userTestData)
-
-    expect(response.body._id).toBeDefined()
-    expect(response.body.email).toBe(userTestData.email)
+    expect(User.create).toHaveBeenCalledWith(mockUserTestData)
+    expect(next).toHaveBeenCalledWith(new StatusError('Error: Unable to create user', 422))
   })
 })
