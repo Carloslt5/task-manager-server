@@ -7,11 +7,11 @@ beforeEach(() => {
 
 jest.mock('../models/User.model')
 
-const req = {
+const req: any = {
   body: {}
 }
 
-const res = {
+const res: any = {
   status: jest.fn().mockReturnThis(),
   json: jest.fn()
 }
@@ -33,8 +33,8 @@ describe('POST signup function', () => {
   it('should successfully create a new user and respond with status 201', async () => {
     const mockUser = { _id: 'someUserId', ...signupTestData };
     (User.create as jest.Mock).mockResolvedValue(mockUser)
-    await signup(req as any, res as any, next)
 
+    await signup(req, res, next)
     expect(User.create).toHaveBeenCalledWith(signupTestData)
     expect(res.status).toHaveBeenCalledWith(201)
     expect(res.json).toHaveBeenCalledWith(mockUser)
@@ -43,8 +43,8 @@ describe('POST signup function', () => {
 
   it('should handle an error when user creation returns null', async () => {
     (User.create as jest.Mock).mockResolvedValue(null)
-    await signup(req as any, res as any, next)
 
+    await signup(req, res, next)
     expect(User.create).toHaveBeenCalledWith(signupTestData)
     expect(next).toHaveBeenCalledWith(new StatusError('Error: Unable to create user', 422))
   })
@@ -66,11 +66,28 @@ describe('POST login function', () => {
       signToken: jest.fn().mockReturnValue('fakeAuthToken')
     })
 
-    await login(req as any, res as any, next)
-
+    await login(req, res, next)
     expect(User.findOne).toHaveBeenCalledWith({ email: loginTestData.email })
     expect(res.status).toHaveBeenCalledWith(200)
     expect(res.json).toHaveBeenCalledWith({ authToken: 'fakeAuthToken' })
     expect(next).not.toHaveBeenCalled()
+  })
+
+  it('should handle USER NOT FOUND and respond with status 401', async () => {
+    (User.findOne as jest.Mock).mockResolvedValue(null)
+
+    await login(req, res, next)
+    expect(User.findOne).toHaveBeenCalledWith({ email: loginTestData.email })
+    expect(next).toHaveBeenCalledWith(new StatusError('User not found', 401))
+  })
+
+  it('should handle INCORRECT PASSWORD and respond with status 401', async () => {
+    (User.findOne as jest.Mock).mockResolvedValue({
+      validatePassword: jest.fn().mockReturnValue(false)
+    })
+
+    await login(req, res, next)
+    expect(User.findOne).toHaveBeenCalledWith({ email: loginTestData.email })
+    expect(next).toHaveBeenCalledWith(new StatusError('Password incorrect', 401))
   })
 })
