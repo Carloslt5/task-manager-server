@@ -55,13 +55,8 @@ const verify = async (req: PayloadRequest, res: Response, next: NextFunction): P
   }
 }
 
-const testController = (req: Request, res: Response): void => {
-  res.status(200).json({ message: 'todo ok' })
-}
-
 export {
   signup,
   login,
-  verify,
-  testController
+  verify
 }
