@@ -14,7 +14,7 @@ export type PayloadRequest<
 }
 
 const isAuthenticated = expressjwt({
-  secret: process.env.TOKEN_SECRET as Secret,
+  secret: process.env.TOKEN_SECRET ?? 'secret' as Secret,
   algorithms: ['HS256'],
   requestProperty: 'payload',
   getToken: getTokenFromHeaders as TokenGetter

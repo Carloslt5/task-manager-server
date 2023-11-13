@@ -66,7 +66,7 @@ userSchema.methods.signToken = function () {
   const payload = { _id, firstName, lastName }
   const authToken: string = jwt.sign(
     payload,
-    process.env.TOKEN_SECRET as Secret,
+    process.env.TOKEN_SECRET ?? 'secret' as Secret,
     { algorithm: 'HS256', expiresIn: '6h' }
   )
   return authToken
