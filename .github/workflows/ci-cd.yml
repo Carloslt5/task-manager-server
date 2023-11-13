@@ -1,4 +1,4 @@
-name: Fly ci/cd
+name: Testing & Fly Deploy
 on:
   push:
     branches:
