@@ -30,8 +30,9 @@ describe('POST signup function', () => {
     req.body = signupTestData
   })
 
+  const mockUser = { _id: 'someUserId', ...signupTestData }
+
   it('should successfully create a new user and respond with status 201', async () => {
-    const mockUser = { _id: 'someUserId', ...signupTestData };
     (User.create as jest.Mock).mockResolvedValue(mockUser)
 
     await signup(req, res, next)

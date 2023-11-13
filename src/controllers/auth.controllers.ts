@@ -1,4 +1,4 @@
-import { type Request, type NextFunction, type Response } from 'express'
+import { type NextFunction, type Response } from 'express'
 import User from '../models/User.model'
 import { type LoginDataType, type SignUpDataType } from '../schemas/auth.schema'
 import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
