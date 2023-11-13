@@ -10,12 +10,6 @@ COPY . ./
 
 RUN npm run build
 
-FROM node:20 
-
-WORKDIR /app
-
-COPY --from=node_builder /app/dist ./dist
-
-COPY --from=node_builder /app/node_modules ./node_modules
+EXPOSE 5005
 
 CMD [ "node", "./dist/server.js" ]
