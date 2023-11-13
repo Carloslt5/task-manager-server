@@ -1,0 +1,1 @@
+[![Fly Deploy](https://github.com/Carloslt5/todo-app-ts-server/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Carloslt5/todo-app-ts-server/actions/workflows/ci-cd.yml)

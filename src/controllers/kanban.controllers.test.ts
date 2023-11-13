@@ -1,4 +1,5 @@
 import KanbanBoard from '../models/KanbanBoard.model'
+import { StatusError } from './auth.controllers'
 import { getKanbanBoard, getOneKanbanBoard } from './kanban.controllers'
 
 jest.mock('../models/KanbanBoard.model.ts')
@@ -45,6 +46,15 @@ describe('GET User Kanban Boards function', () => {
     expect(KanbanBoard.find).toHaveBeenCalledWith({ owner: 'someUserID' })
     expect(res.status).toHaveBeenCalledWith(200)
     expect(res.json).toHaveBeenCalledWith(mockKanbanBoards)
+  })
+  it('should handle KANBAN BOARDS NOT FOUND and respond with status 404', async () => {
+    (KanbanBoard.find as jest.Mock).mockReturnValue({
+      populate: jest.fn().mockResolvedValue(null)
+    })
+    await getKanbanBoard(req, res, next)
+
+    expect(KanbanBoard.find).toHaveBeenCalledWith({ owner: 'someUserID' })
+    expect(next).toHaveBeenCalledWith(new StatusError('Error: Can not found Boards', 404))
   })
 })
 
