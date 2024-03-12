@@ -1,9 +1,9 @@
 module.exports = {
   env: {
-    browser: true,
     es2021: true,
+    node: true,
   },
-  extends: 'standard-with-typescript',
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
   overrides: [
     {
       env: {
@@ -11,28 +11,16 @@ module.exports = {
       },
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
-        sourceType: 'script',
+        sourceType: 'module',
       },
     },
   ],
+  ignorePatterns: ['**/*.eslintrc.cjs'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
-    project: ['./**/tsconfig.json'],
-    sourceType: 'module',
+    project: './**/tsconfig.json',
   },
-  ignorePatterns: ['**/*.eslintrc.js'],
-  rules: {
-    semi: [1, 'never'],
-    'no-multi-spaces': 'error',
-    quotes: [2, 'single'],
-    '@typescript-eslint/no-misused-promises': [
-      'error',
-      {
-        checksVoidReturn: false,
-      },
-    ],
-    '@typescript-eslint/space-before-function-paren': 'off',
-    'n/no-path-concat': 'off',
-    '@typescript-eslint/comma-dangle': 'off',
-  },
-}
+  plugins: ['@typescript-eslint'],
+  rules: {},
+};

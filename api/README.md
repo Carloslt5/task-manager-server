@@ -2,24 +2,24 @@
 
 # Todo App. ExpressJS - TypeScript Server
 
-
 ## Requirements
 
 ```
 docker 24.0.6
 ```
 
-### Step 1 - Init SERVER 
+### Step 1 - Init SERVER
 
-`./server` 
+`./server`
 
-  ```bash
+```bash
 docker compose-up
-  ```
+```
 
 ## Main Dependencies
-  - Express
-  - TypeScript
-  - Mongoose
-  - Jest
-  - Zod
+
+- Express
+- TypeScript
+- Mongoose
+- Jest
+- Zod

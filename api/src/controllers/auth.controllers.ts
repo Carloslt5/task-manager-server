@@ -1,36 +1,41 @@
-import { type NextFunction, type Response } from 'express'
+import { type NextFunction, type Response } from 'express';
 // import User from '../models/User.model'
-import { type LoginDataType, type SignUpDataType } from '../schemas/auth.schema'
-import { type PayloadRequest } from '../middlewares/verifyToken.middleware'
-import { usermodel } from '../models/postgre-sql/user'
+import { type LoginDataType, type SignUpDataType } from '../schemas/auth.schema';
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware';
+import { usermodel } from '../models/postgre-sql/user';
 
 export class StatusError extends Error {
-  statusCode: number
+  statusCode: number;
   constructor(message: string, statusCode: number) {
-    super(message)
-    this.name = 'StatusError'
-    this.statusCode = statusCode
+    super(message);
+    this.name = 'StatusError';
+    this.statusCode = statusCode;
   }
 }
 
 const signup = async (
   req: PayloadRequest<unknown, unknown, SignUpDataType>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
-  const { firstName, lastName, email, password } = req.body
+  const { firstName, lastName, email, password } = req.body;
 
   try {
-    const createUser = await usermodel.create({ firstName, lastName, email, password })
+    const createUser = await usermodel.create({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
     if (createUser === null) {
-      throw new StatusError('Error: Unable to create user', 422)
+      throw new StatusError('Error: Unable to create user', 422);
     } else {
-      res.status(201).json(createUser)
+      res.status(201).json(createUser);
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 // const login = async (
 //   req: PayloadRequest<unknown, unknown, LoginDataType>,
@@ -64,4 +69,4 @@ const signup = async (
 //   }
 // }
 
-export { signup }
+export { signup };

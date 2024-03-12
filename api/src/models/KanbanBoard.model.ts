@@ -1,10 +1,10 @@
-import { Schema, model, type ObjectId } from 'mongoose'
-import { type IProject } from './Project.model'
+import { Schema, model, type ObjectId } from 'mongoose';
+import { type IProject } from './Project.model';
 
 export interface IKanbanBoard extends Document {
-  title: string
-  project: IProject[]
-  owner: ObjectId
+  title: string;
+  project: IProject[];
+  owner: ObjectId;
 }
 
 const kanbanboardschema = new Schema(
@@ -12,22 +12,24 @@ const kanbanboardschema = new Schema(
     title: {
       type: String,
       required: [true, 'Title is required.'],
-      trim: true
+      trim: true,
     },
-    project: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Project'
-    }],
+    project: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Project',
+      },
+    ],
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: 'User',
+    },
   },
   {
-    timestamps: true
-  }
-)
+    timestamps: true,
+  },
+);
 
-const Kanbanboard = model<IKanbanBoard>('Kanbanboard', kanbanboardschema)
+const Kanbanboard = model<IKanbanBoard>('Kanbanboard', kanbanboardschema);
 
-export default Kanbanboard
+export default Kanbanboard;

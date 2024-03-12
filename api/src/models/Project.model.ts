@@ -1,11 +1,11 @@
-import { Schema, model, type ObjectId } from 'mongoose'
-import { type IState } from './State.model'
+import { Schema, model, type ObjectId } from 'mongoose';
+import { type IState } from './State.model';
 
 export interface IProject extends Document {
-  title: string
-  description: string
-  state: IState[]
-  owner: ObjectId
+  title: string;
+  description: string;
+  state: IState[];
+  owner: ObjectId;
 }
 
 const projectschema = new Schema(
@@ -14,26 +14,28 @@ const projectschema = new Schema(
       type: String,
       required: [true, 'Title is required.'],
       trim: true,
-      unique: true
+      unique: true,
     },
     description: {
       type: String,
-      trim: true
+      trim: true,
     },
-    state: [{
-      type: Schema.Types.ObjectId,
-      ref: 'State'
-    }],
+    state: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'State',
+      },
+    ],
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: 'User',
+    },
   },
   {
-    timestamps: true
-  }
-)
+    timestamps: true,
+  },
+);
 
-const Project = model<IProject>('Project', projectschema)
+const Project = model<IProject>('Project', projectschema);
 
-export default Project
+export default Project;

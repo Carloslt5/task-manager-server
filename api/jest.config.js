@@ -1,6 +1,6 @@
-const fs = require('fs')
+const fs = require('fs');
 
-const swcConfig = JSON.parse(fs.readFileSync(`${__dirname}/.swcrc`, 'utf-8'))
+const swcConfig = JSON.parse(fs.readFileSync(`${__dirname}/.swcrc`, 'utf-8'));
 
 // Jest configuration
 // https://jestjs.io/docs/en/configuration
@@ -14,18 +14,15 @@ const config = {
 
   setupFiles: [
     // Configure environment variables for the test environment
-    '<rootDir>/jest.setup.js'
+    '<rootDir>/jest.setup.js',
   ],
 
   transform: {
-    '^.+\\.(t|j)sx?$': ['@swc/jest', { ...swcConfig }]
+    '^.+\\.(t|j)sx?$': ['@swc/jest', { ...swcConfig }],
   },
   // File extensions to be tested
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/'
-  ]
-}
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+};
 
-module.exports = config
+module.exports = config;

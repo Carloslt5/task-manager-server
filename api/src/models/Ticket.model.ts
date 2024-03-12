@@ -1,6 +1,6 @@
-import { type ObjectId, Schema, model } from 'mongoose'
-import { type IProject } from './Project.model'
-import { type IState } from './State.model'
+import { type ObjectId, Schema, model } from 'mongoose';
+import { type IProject } from './Project.model';
+import { type IState } from './State.model';
 
 enum Priority {
   LOW = 'Low',
@@ -9,12 +9,12 @@ enum Priority {
 }
 
 export interface ITicket extends Document {
-  title: string
-  projectId: IProject
-  description: string
-  state: IState
-  priority: Priority
-  owner: ObjectId
+  title: string;
+  projectId: IProject;
+  description: string;
+  state: IState;
+  priority: Priority;
+  owner: ObjectId;
 }
 
 const ticketSchema = new Schema(
@@ -22,35 +22,35 @@ const ticketSchema = new Schema(
     title: {
       type: String,
       required: [true, 'Title is required'],
-      trim: true
+      trim: true,
     },
     description: {
       type: String,
-      trim: true
+      trim: true,
     },
     project: {
       type: Schema.Types.ObjectId,
-      ref: 'Project'
+      ref: 'Project',
     },
     state: {
       type: Schema.Types.ObjectId,
-      ref: 'State'
+      ref: 'State',
     },
     priority: {
       type: String,
       enum: [Priority.LOW, Priority.MEDIUM, Priority.HIGH],
       default: Priority.LOW,
-      required: [true, 'Priority is required']
+      required: [true, 'Priority is required'],
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: 'User',
+    },
   },
   {
-    timestamps: true
-  }
-)
-const Ticket = model<ITicket>('Ticket', ticketSchema)
+    timestamps: true,
+  },
+);
+const Ticket = model<ITicket>('Ticket', ticketSchema);
 
-export default Ticket
+export default Ticket;
