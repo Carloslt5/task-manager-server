@@ -1,23 +1,35 @@
-import mongoose from 'mongoose';
+import { Client } from 'pg';
 
-const MONGO_URI = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/todo-app';
+export const dbConfig =
+  process.env.NODE_ENV === 'test'
+    ? {
+        host: 'localhost',
+        database: 'postgres',
+        port: 5432,
+        user: 'postgres',
+        password: 'postgres',
+      }
+    : {
+        host: process.env.DATABASE_HOST || 'localhost',
+        database: process.env.DATABASE_NAME || 'postgres',
+        port: process.env.DATABASE_PORT ? parseInt(process.env.DATABASE_PORT) : 5432,
+        user: process.env.DATABASE_USER || 'postgres',
+        password: process.env.DATABASE_PASSWORD || 'postgres',
+      };
 
-let connection: typeof mongoose | undefined;
+async function connectDataBase() {
+  const client = new Client(dbConfig);
 
-export async function connect(url = MONGO_URI): Promise<typeof mongoose> {
-  if (connection != null) return connection;
-
-  connection = await mongoose
-    .connect(url)
-    .then((x) => {
-      const dbName = x.connections[0].name;
-      console.log(`Connected to Mongo! Database name: "${dbName}"`);
-      return x;
-    })
-    .catch((err) => {
-      console.error('Error connecting to mongo: ', err);
-      throw err;
-    });
-
-  return connection;
+  try {
+    await client.connect();
+    const result = await client.query('SELECT NOW()');
+    console.log('✅ Connected', result.rows[0]);
+  } catch (error) {
+    console.error('Error al conectar o consultar la base de datos:', error);
+    process.exit(1);
+  } finally {
+    await client.end();
+  }
 }
+
+connectDataBase();
