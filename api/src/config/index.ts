@@ -1,7 +1,8 @@
-import express, { type Express } from 'express';
-import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import express, { type Express } from 'express';
+import helmet from 'helmet';
+import logger from 'morgan';
 
 const FRONTEND_URL = process.env.ORIGIN ?? 'http://localhost:3000';
 
@@ -14,6 +15,7 @@ export default (app: Express): void => {
     }),
   );
 
+  app.use(helmet());
   app.use(logger('dev'));
 
   app.use(express.json());
