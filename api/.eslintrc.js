@@ -15,12 +15,15 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['**/*.eslintrc.cjs'],
+  ignorePatterns: ['.eslintrc.js'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
-    project: './**/tsconfig.json',
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint'],
-  rules: {},
+  rules: {
+    // indent: 'error',
+  },
 };
