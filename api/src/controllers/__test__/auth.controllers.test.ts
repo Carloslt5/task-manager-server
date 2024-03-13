@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { signupTestData } from '../../constants/mockUserData';
 import { usermodel } from '../../models/postgre-sql/user';
 import { signup } from '../auth.controllers';
 
@@ -15,15 +16,8 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const signupTestData = {
-  firstName: 'First  Name Test',
-  lastName: 'Last Name Test',
-  email: 'test@email.com',
-  password: 'password123',
-};
-
-describe('User controller, success request', () => {
-  it('Create User and status 201', async () => {
+describe('Signup function', () => {
+  it('Sing up User and return status 201', async () => {
     const req = { body: signupTestData } as Request;
     await signup(req, res, next);
 
@@ -31,6 +25,16 @@ describe('User controller, success request', () => {
     expect(usermodel.signup).toHaveBeenCalledWith(signupTestData);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({ status: true, message: 'User created' });
+    expect(next).not.toHaveBeenCalled();
+  });
+  it('User create failed and return status 404', async () => {
+    const req = {} as Request;
+    (usermodel.signup as jest.Mock) = jest.fn(() => Promise.resolve({ rowCount: 0 }));
+
+    await signup(req, res, next);
+    expect(usermodel.signup).toHaveBeenCalledTimes(1);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ status: false, message: 'Can not create user' });
     expect(next).not.toHaveBeenCalled();
   });
 });
