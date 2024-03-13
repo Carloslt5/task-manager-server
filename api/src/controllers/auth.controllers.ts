@@ -1,8 +1,7 @@
-import { type NextFunction, type Response } from 'express';
 // import User from '../models/User.model'
-import { LoginDataType, type SignUpDataType } from '../schemas/auth.schema';
-import { type PayloadRequest } from '../middlewares/verifyToken.middleware';
+import { RequestHandler } from 'express';
 import { usermodel } from '../models/postgre-sql/user';
+import { UserNotID } from '../schemas/user.type';
 
 export class StatusError extends Error {
   statusCode: number;
@@ -13,25 +12,13 @@ export class StatusError extends Error {
   }
 }
 
-const signup = async (
-  req: PayloadRequest<unknown, unknown, SignUpDataType>,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  const { firstName, lastName, email, password } = req.body;
-
+export const signup: RequestHandler = async (req, res, next) => {
   try {
-    const createUser = await usermodel.create({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
-    if (createUser === null) {
-      throw new StatusError('Error: Unable to create user', 422);
-    } else {
-      res.status(201).json(createUser);
-    }
+    const input: UserNotID = req.body;
+    const data = await usermodel.signup(input);
+    data.rowCount === 0
+      ? res.status(404).json({ status: false, message: 'Can not create user' })
+      : res.status(200).json({ status: true, message: 'User created' });
   } catch (error) {
     next(error);
   }
@@ -68,5 +55,3 @@ const signup = async (
 //     next(error)
 //   }
 // }
-
-export { signup };
