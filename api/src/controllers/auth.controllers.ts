@@ -1,18 +1,8 @@
-// import User from '../models/User.model'
 import { NextFunction, RequestHandler, Response } from 'express';
 import { HTTPError } from '../error-handling/HTTPError';
 import { PayloadRequest } from '../middlewares/verifyToken.middleware';
 import { usermodel } from '../models/postgre-sql/user';
 import { UserNotID } from '../schemas/user.type';
-
-// export class StatusError extends Error {
-//   statusCode: number;
-//   constructor(message: string, statusCode: number) {
-//     super(message);
-//     this.name = 'StatusError';
-//     this.statusCode = statusCode;
-//   }
-// }
 
 export const signup: RequestHandler = async (req, res, next) => {
   try {
