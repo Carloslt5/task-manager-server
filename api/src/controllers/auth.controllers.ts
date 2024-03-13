@@ -1,16 +1,18 @@
 // import User from '../models/User.model'
-import { RequestHandler } from 'express';
+import { NextFunction, RequestHandler, Response } from 'express';
+import { HTTPError } from '../error-handling/HTTPError';
+import { PayloadRequest } from '../middlewares/verifyToken.middleware';
 import { usermodel } from '../models/postgre-sql/user';
 import { UserNotID } from '../schemas/user.type';
 
-export class StatusError extends Error {
-  statusCode: number;
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.name = 'StatusError';
-    this.statusCode = statusCode;
-  }
-}
+// export class StatusError extends Error {
+//   statusCode: number;
+//   constructor(message: string, statusCode: number) {
+//     super(message);
+//     this.name = 'StatusError';
+//     this.statusCode = statusCode;
+//   }
+// }
 
 export const signup: RequestHandler = async (req, res, next) => {
   try {
@@ -24,34 +26,30 @@ export const signup: RequestHandler = async (req, res, next) => {
   }
 };
 
-// const login = async (
-//   req: PayloadRequest<unknown, unknown, LoginDataType>,
-//   res: Response,
-//   next: NextFunction,
-// ): Promise<void> => {
-//   const { email, password } = req.body;
+export const login: RequestHandler = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const data = await usermodel.findOne({ email });
+    if (data.rowCount === 0) {
+      throw new HTTPError(401, 'User not found');
+    }
 
-//   try {
-//     const foundUser = await usermodel.findOne({ email });
-//     if (foundUser === null) {
-//       throw new StatusError('User not found', 401);
-//     }
+    const user = data.rows[0];
+    if (user && (await usermodel.validatePassword(password, user.password))) {
+      const authToken = await usermodel.signToken(user);
+      res.status(200).json({ authToken });
+    } else {
+      throw new HTTPError(400, 'Password incorrect');
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
-//     if (foundUser.validatePassword(password)) {
-//       const authToken = foundUser.signToken();
-//       res.status(200).json({ authToken });
-//     } else {
-//       throw new StatusError('Password incorrect', 401);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// const verify = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-//   try {
-//     res.status(200).json(req.payload)
-//   } catch (error) {
-//     next(error)
-//   }
-// }
+export const verify = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    res.status(200).json(req.payload);
+  } catch (error) {
+    next(error);
+  }
+};

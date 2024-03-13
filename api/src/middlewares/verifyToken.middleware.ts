@@ -1,9 +1,10 @@
 import { type Request } from 'express';
-import { type TokenGetter, expressjwt } from 'express-jwt';
-import { type Secret } from 'jsonwebtoken';
+import { expressjwt, type TokenGetter } from 'express-jwt';
 import { type ParamsDictionary, type Query } from 'express-serve-static-core';
+import { type Secret } from 'jsonwebtoken';
 import { type UserPayload } from '../models/User.model';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PayloadRequest<P = ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = Query> = Request<
   P,
   ResBody,

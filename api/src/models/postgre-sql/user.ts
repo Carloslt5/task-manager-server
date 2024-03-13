@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt, { Secret } from 'jsonwebtoken';
 import { Pool, QueryResult } from 'pg';
 import { dbConfig } from '../../db';
 import { type User, type UserNotID } from '../../schemas/user.type';
@@ -17,19 +18,28 @@ class UserModel {
     );
   }
 
-  async get(): Promise<QueryResult<User>> {
-    return await db.query(`SELECT * FROM client`);
-  }
-
-  private async encryptPassword(password: string) {
+  async encryptPassword(password: string) {
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(password, salt);
     return hashedPassword;
   }
 
-  private async validatePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
+  async validatePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compareSync(plainPassword, hashedPassword);
+  }
+
+  async findOne({ email }: { email: string }): Promise<QueryResult<User>> {
+    return db.query('SELECT * FROM client WHERE email = $1', [email]);
+  }
+
+  async signToken({ id, firstName, lastName }: { id: string; firstName: string; lastName: string }) {
+    const payload = { id, firstName, lastName };
+    const authToken: string = jwt.sign(payload, process.env.TOKEN_SECRET ?? ('secret' as Secret), {
+      algorithm: 'HS256',
+      expiresIn: '6h',
+    });
+    return authToken;
   }
 }
 

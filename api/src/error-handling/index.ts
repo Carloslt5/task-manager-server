@@ -1,15 +1,15 @@
-import { type Request, type Response, type NextFunction, type Express } from 'express';
-import { StatusError } from '../controllers/auth.controllers';
+import { type Express, type Request, type Response } from 'express';
+import { HTTPError } from './HTTPError';
 
 export default (app: Express): void => {
-  app.use((req, res, next) => {
+  app.use((req, res) => {
     res.status(404).json({ message: 'This route does not exist' });
   });
 
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  app.use((err: Error, req: Request, res: Response) => {
     console.error('ERROR', req.method, req.path, err);
 
-    if (err instanceof StatusError) {
+    if (err instanceof HTTPError) {
       res.status(err.statusCode).json({ message: err.message });
     }
 

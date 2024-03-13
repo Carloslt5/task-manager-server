@@ -10,9 +10,16 @@ const userProperties = {
   password: z.string().min(4, 'Password requires a minimum of 4 characters').trim(),
 };
 
-export const CreateUser = z.object({
+export const SignupDataType = z.object({
   body: z.object({
     ...userProperties,
+  }),
+});
+
+export const LoginDataType = z.object({
+  body: z.object({
+    email: userProperties.email,
+    password: userProperties.password,
   }),
 });
 
