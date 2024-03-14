@@ -8,6 +8,7 @@ export const signup: RequestHandler = async (req, res, next) => {
   try {
     const input: UserNotID = req.body;
     const data = await usermodel.signup(input);
+    console.log('🚀 --------- data', data);
     data.rowCount === 0
       ? res.status(404).json({ status: false, message: 'Can not create user' })
       : res.status(200).json({ status: true, message: 'User created' });
@@ -22,14 +23,14 @@ export const login: RequestHandler = async (req, res, next) => {
     const data = await usermodel.findOne({ email });
     if (data.rowCount === 0) {
       throw new HTTPError(401, 'User not found');
-    }
-
-    const user = data.rows[0];
-    if (user && (await usermodel.validatePassword(password, user.password))) {
-      const authToken = await usermodel.signToken(user);
-      res.status(200).json({ authToken });
     } else {
-      throw new HTTPError(400, 'Password incorrect');
+      const user = data.rows[0];
+      if (user && (await usermodel.validatePassword(password, user.password))) {
+        const authToken = await usermodel.signToken(user);
+        res.status(200).json({ authToken });
+      } else {
+        throw new HTTPError(400, 'Password incorrect');
+      }
     }
   } catch (error) {
     next(error);
