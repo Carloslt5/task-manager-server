@@ -1,8 +1,8 @@
 import { type NextFunction, type Response } from 'express';
+import { type PayloadRequest } from '../middlewares/verifyToken.middleware';
 import KanbanBoard from '../models/KanbanBoard.model';
 import { type KanbanBodyType, type KanbanParamsType } from '../schemas/kanban.schema';
 import { StatusError } from './auth.controllers';
-import { type PayloadRequest } from '../middlewares/verifyToken.middleware';
 
 const getKanbanBoard = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const _id = req.payload?._id;
@@ -100,4 +100,4 @@ const deleteKanbanBoard = async (
   }
 };
 
-export { getKanbanBoard, getOneKanbanBoard, createKanbanBoard, updateKanbanBoard, deleteKanbanBoard };
+export { createKanbanBoard, deleteKanbanBoard, getKanbanBoard, getOneKanbanBoard, updateKanbanBoard };
