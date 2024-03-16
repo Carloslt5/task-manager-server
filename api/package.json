@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/server.js",
-    "dev": "nodemon --watch './src/**/*.ts' --exec 'ts-node' ./src/server.ts",
+    "dev": "NODE_ENV=test nodemon --watch './src/**/*.ts' --exec 'ts-node' ./src/server.ts",
     "test": "jest --config ./jest.config.js",
     "test:unit": "jest --config ./jest.config.js --watch",
     "build": "tsc",

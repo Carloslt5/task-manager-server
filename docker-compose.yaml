@@ -19,8 +19,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5005:5005
-    env_file:
-      - ./api/.env
     restart: "always"
     depends_on:
       - postgres
