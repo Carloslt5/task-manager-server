@@ -4,7 +4,7 @@ import { projectmodel } from '../models/postgre-sql/project';
 import { ProjectNotID } from '../schemas/project.type';
 
 export const getUserProject = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-  const userID = req.payload!._id;
+  const userID = req.payload!.id;
 
   try {
     const data = await projectmodel.findAll({ ownerID: userID });
@@ -30,7 +30,7 @@ export const getOneProject: RequestHandler = async (req, res, next): Promise<voi
 };
 
 export const createProject = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-  const userID = req.payload!._id;
+  const userID = req.payload!.id;
   const input: ProjectNotID = req.body;
 
   try {

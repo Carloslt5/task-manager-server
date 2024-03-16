@@ -41,6 +41,10 @@ class UserModel {
     });
     return authToken;
   }
+  async checkOwnerForUser(userId: string, profileId: string): Promise<number> {
+    const result = await db.query('SELECT COUNT(*) FROM client WHERE id = $1 OR id = $2', [userId, profileId]);
+    return result.rows[0].count;
+  }
 }
 
 export const usermodel = new UserModel();

@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.use('/auth', authRoutes);
 router.use('/project', projectRoutes);
+
 // router.use('/todos', todoRoutes)
 // router.use('/kanbanboard', kanbanboard)
 // router.use('/state', state)

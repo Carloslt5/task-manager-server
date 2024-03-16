@@ -8,7 +8,6 @@ export const signup: RequestHandler = async (req, res, next) => {
   try {
     const input: UserNotID = req.body;
     const data = await usermodel.signup(input);
-    console.log('🚀 --------- data', data);
     data.rowCount === 0
       ? res.status(404).json({ status: false, message: 'Can not create user' })
       : res.status(200).json({ status: true, message: 'User created' });

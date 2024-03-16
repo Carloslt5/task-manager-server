@@ -1,14 +1,14 @@
 import { type NextFunction, type Response } from 'express';
-import User from '../models/User.model';
+import { usermodel } from '../models/postgre-sql/user';
 import { type PayloadRequest } from './verifyToken.middleware';
 
 const checkUserOwner = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-  const userId = req.payload?._id;
+  const userId = req.payload!.id;
   const { id: profileId } = req.params;
 
   if (typeof userId === 'string' && typeof profileId === 'string') {
     try {
-      const count = await User.checkOwnerForUser(userId, profileId);
+      const count = await usermodel.checkOwnerForUser(userId, profileId);
       if (count > 0) {
         next();
       } else {
