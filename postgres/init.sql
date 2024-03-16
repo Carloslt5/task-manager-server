@@ -17,24 +17,24 @@ INSERT INTO
   client (id, "firstName", "lastName", email, password)
 VALUES
   (
-    '123e4567-e89b-12d3-a456-426614174000',
-    'Carlos',
+    '0c3d375d-1862-49f1-9364-7f81e8800f20',
+    'Admin',
     'Admin',
     'admin@example.com',
-    'password123'
+    '$2b$10$cg4drDybp2fThekqP5KMp.uRMyhetUYb1Cy2wAfOOHW9.Ytq/ty2i'
   );
 
 INSERT INTO
   project (id, title, description, "ownerID")
 VALUES
   (
-    'A8D6D621-8920-46E5-B769-F54351AF031B',
+    '0c3d375d-1862-49f1-9364-7f81e8800f20',
     'Projecto 1',
     'Description project 1',
     '123e4567-e89b-12d3-a456-426614174000'
   ),
   (
-    'B8D6D621-8920-46E5-B769-F54351AF031B',
+    '0c3d375d-1862-49f1-9364-7f81e8800f20',
     'Proyecto 2',
     'Descripción del proyecto 2',
     '123e4567-e89b-12d3-a456-426614174000'
