@@ -3,14 +3,14 @@ import { Client } from 'pg';
 export const dbConfig =
   process.env.NODE_ENV === 'test'
     ? {
-        host: 'localhost',
+        host: 'postgres',
         database: 'postgres',
         port: 5432,
         user: 'postgres',
         password: 'postgres',
       }
     : {
-        host: process.env.DATABASE_HOST || 'localhost',
+        host: process.env.DATABASE_HOST || 'postgres',
         database: process.env.DATABASE_NAME || 'postgres',
         port: process.env.DATABASE_PORT ? parseInt(process.env.DATABASE_PORT) : 5432,
         user: process.env.DATABASE_USER || 'postgres',
