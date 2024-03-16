@@ -1,4 +1,4 @@
-FROM node:20 as node_builder
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -6,9 +6,10 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . ./
+COPY tsconfig*.json /app
+COPY src /app/src
 
-RUN npm run build
+RUN npm run build 
 
 EXPOSE 5005
 

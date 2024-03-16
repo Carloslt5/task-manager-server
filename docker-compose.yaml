@@ -1,27 +1,26 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # todo-app-server:
-  #   build: .
-  #   ports:
-  #     - "5005:5005"
-  #   environment:
-  #     MONGODB_URI: 'mongodb://db:27017/todo-app'
-  #   depends_on:
-  #     - db
-
-  # db:
-  #   image: mongo:latest
-  #   ports:
-  #     - "27018:27017"
-
   postgres:
     container_name: taskdb
     build:
       context: ./postgres
       dockerfile: Dockerfile
     ports:
-      - '5432:5432'
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+  api:
+    container_name: api-task-manager
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 5005:5005
+    env_file:
+      - ./api/.env
+    restart: "always"
+    depends_on:
+      - postgres
