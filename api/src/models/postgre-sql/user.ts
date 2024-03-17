@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
-import jwt, { Secret } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { Pool, QueryResult } from 'pg';
 import { dbConfig } from '../../db';
+import { UserPayload } from '../../middlewares/requireAuth';
 import { type User, type UserNotID } from '../../schemas/user.type';
 
 const db = new Pool(dbConfig);
@@ -33,9 +34,9 @@ class UserModel {
     return db.query('SELECT * FROM client WHERE email = $1', [email]);
   }
 
-  async signToken({ id, firstName, lastName }: { id: string; firstName: string; lastName: string }) {
+  async signToken({ id, firstName, lastName }: UserPayload) {
     const payload = { id, firstName, lastName };
-    const authToken: string = jwt.sign(payload, process.env.TOKEN_SECRET ?? ('secret' as Secret), {
+    const authToken: string = jwt.sign(payload, process.env.TOKEN_SECRET ?? 'secret', {
       algorithm: 'HS256',
       expiresIn: '6h',
     });

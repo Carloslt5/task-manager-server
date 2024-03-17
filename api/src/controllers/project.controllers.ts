@@ -1,9 +1,8 @@
-import { NextFunction, RequestHandler, Response } from 'express';
-import { PayloadRequest } from '../middlewares/verifyToken.middleware';
+import { RequestHandler } from 'express';
 import { projectmodel } from '../models/postgre-sql/project';
 import { ProjectNotID } from '../schemas/project.type';
 
-export const getUserProject = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
+export const getUserProject: RequestHandler = async (req, res, next): Promise<void> => {
   const userID = req.payload!.id;
 
   try {
@@ -29,7 +28,7 @@ export const getOneProject: RequestHandler = async (req, res, next): Promise<voi
   }
 };
 
-export const createProject = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
+export const createProject: RequestHandler = async (req, res, next): Promise<void> => {
   const userID = req.payload!.id;
   const input: ProjectNotID = req.body;
 

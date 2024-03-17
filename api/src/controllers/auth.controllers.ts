@@ -1,6 +1,5 @@
-import { NextFunction, RequestHandler, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { HTTPError } from '../error-handling/HTTPError';
-import { PayloadRequest } from '../middlewares/verifyToken.middleware';
 import { usermodel } from '../models/postgre-sql/user';
 import { UserNotID } from '../schemas/user.type';
 
@@ -36,7 +35,7 @@ export const login: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const verify = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
+export const verify = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     res.status(200).json(req.payload);
   } catch (error) {
