@@ -1,8 +1,8 @@
-import express from 'express';
+import { Router } from 'express';
 import authRoutes from './auth.routes';
 import projectRoutes from './project.routes';
 
-const router = express.Router();
+const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/project', projectRoutes);
