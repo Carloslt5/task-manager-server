@@ -28,14 +28,14 @@ INSERT INTO
   project (id, title, description, "ownerID")
 VALUES
   (
-    '0c3d375d-1862-49f1-9364-7f81e8800f20',
+    '512E8FFC-FAEC-4E01-8F98-03A283323038',
     'Projecto 1',
     'Description project 1',
-    '123e4567-e89b-12d3-a456-426614174000'
+    '0c3d375d-1862-49f1-9364-7f81e8800f20'
   ),
   (
-    '0c3d375d-1862-49f1-9364-7f81e8800f20',
+    'A9AC8F82-13BA-4D97-993F-3C405DE2C1BD',
     'Proyecto 2',
     'Descripción del proyecto 2',
-    '123e4567-e89b-12d3-a456-426614174000'
+    '0c3d375d-1862-49f1-9364-7f81e8800f20'
   );
