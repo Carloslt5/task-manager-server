@@ -1,12 +1,12 @@
-import { type Express, type Request, type Response } from 'express';
+import { type Express, type NextFunction, type Request, type Response } from 'express';
 import { HTTPError } from './HTTPError';
 
 export default (app: Express): void => {
-  app.use((req, res) => {
+  app.use((_req, res) => {
     res.status(404).json({ message: 'This route does not exist' });
   });
 
-  app.use((err: Error, req: Request, res: Response) => {
+  app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
     console.error('ERROR', req.method, req.path, err);
 
     if (err instanceof HTTPError) {

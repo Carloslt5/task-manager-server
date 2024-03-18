@@ -1,8 +1,7 @@
-import { type NextFunction, type Response } from 'express';
+import { Request, type NextFunction, type Response } from 'express';
 import { usermodel } from '../models/postgre-sql/user';
-import { type PayloadRequest } from './verifyToken.middleware';
 
-const checkUserOwner = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
+const checkUserOwner = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const userId = req.payload!.id;
   const { id: profileId } = req.params;
 
