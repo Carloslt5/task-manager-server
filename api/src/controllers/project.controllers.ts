@@ -6,8 +6,8 @@ export const getUserProject: RequestHandler = async (req, res, next): Promise<vo
   const userID = req.payload!.id;
 
   try {
-    const data = await projectmodel.findAll({ ownerID: userID });
-    data.rowCount === 0
+    const data = await projectmodel.findAll({ userID });
+    data.rowCount === null
       ? res.status(401).json({ status: false, message: 'Project not found' })
       : res.status(200).json({ status: true, message: 'Project found', data: data.rows });
   } catch (error) {

@@ -31,7 +31,7 @@ class UserModel {
   }
 
   async findOne({ email }: { email: string }): Promise<QueryResult<User>> {
-    return db.query('SELECT * FROM client WHERE email = $1', [email]);
+    return await db.query('SELECT * FROM client WHERE email = $1', [email]);
   }
 
   async signToken({ id, firstName, lastName }: UserPayload) {

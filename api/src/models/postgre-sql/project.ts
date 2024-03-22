@@ -5,8 +5,8 @@ import { Project, ProjectID, ProjectNotID } from '../../schemas/project.type';
 const db = new Pool(dbConfig);
 
 class ProjectModel {
-  async findAll({ ownerID }: { ownerID: string }): Promise<QueryResult<Project[]>> {
-    return db.query('SELECT * FROM project WHERE "ownerID" = $1', [ownerID]);
+  async findAll({ userID }: { userID: string }): Promise<QueryResult<Project[]>> {
+    return db.query('SELECT * FROM project WHERE "ownerID" = $1', [userID]);
   }
 
   async findByID(projectId: ProjectID): Promise<QueryResult<Project[]>> {
