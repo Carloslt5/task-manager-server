@@ -35,7 +35,7 @@ export const createProject: RequestHandler = async (req, res, next): Promise<voi
   try {
     const data = await projectmodel.create({ ...input, ownerID: userID });
     data.rowCount === 0
-      ? res.status(200).json({ status: true, message: 'Project created' })
+      ? res.status(404).json({ status: false, message: 'Project not created' })
       : res.status(200).json({ status: true, message: 'Project created', data: data.rows[0] });
   } catch (error) {
     next(error);

@@ -18,7 +18,7 @@ class ProjectModel {
     return db.query(
       `
     INSERT INTO project (id, title, description, "ownerID")
-    VALUES ($1, $2, $3, $4) `,
+    VALUES ($1, $2, $3, $4) RETURNING *`,
       [projectID, title, description, ownerID],
     );
   }
