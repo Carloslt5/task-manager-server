@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
+import { ProjectNotID } from '../interfaces/project.type';
 import { projectmodel } from '../models/postgre-sql/project';
-import { ProjectNotID } from '../schemas/project.type';
 
 export const getUserProject: RequestHandler = async (req, res, next): Promise<void> => {
   const userID = req.payload!.id;

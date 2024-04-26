@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Pool, QueryResult } from 'pg';
 import { dbConfig } from '../../db';
+import { User, UserNotID } from '../../interfaces/user.type';
 import { UserPayload } from '../../middlewares/requireAuth';
-import { type User, type UserNotID } from '../../schemas/user.type';
 
 const db = new Pool(dbConfig);
 

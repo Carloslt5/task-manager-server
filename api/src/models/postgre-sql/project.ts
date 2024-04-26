@@ -1,6 +1,6 @@
 import { Pool, QueryResult } from 'pg';
 import { dbConfig } from '../../db';
-import { Project, ProjectID, ProjectNotID } from '../../schemas/project.type';
+import { Project, ProjectID, ProjectNotID } from '../../interfaces/project.type';
 
 const db = new Pool(dbConfig);
 

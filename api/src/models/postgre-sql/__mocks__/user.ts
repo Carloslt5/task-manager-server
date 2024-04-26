@@ -1,5 +1,5 @@
 import { mockAuthToken, mockClient } from '../../../constants/mockUserData';
-import { UserNotID } from '../../../schemas/user.type';
+import { UserNotID } from '../../../interfaces/user.type';
 
 export const usermodel = {
   signup: jest.fn().mockImplementation((input: UserNotID) => {
