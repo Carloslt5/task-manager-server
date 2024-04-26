@@ -17,7 +17,7 @@ export const dbConfig =
         password: process.env.DATABASE_PASSWORD || 'postgres',
       };
 
-async function connectDataBase() {
+export async function connectDataBase() {
   const client = new Client(dbConfig);
 
   try {
@@ -31,5 +31,3 @@ async function connectDataBase() {
     await client.end();
   }
 }
-
-connectDataBase();

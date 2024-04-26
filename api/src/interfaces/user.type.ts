@@ -8,3 +8,4 @@ export type User = {
 
 export type UserID = Pick<User, 'id'>;
 export type UserNotID = Omit<User, 'id'>;
+export type UserPayload = Omit<User, 'password'>;

@@ -1,11 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-
-export interface UserPayload {
-  id: string;
-  firstName: string;
-  lastName: string;
-}
+import { UserPayload } from 'src/interfaces/user.type';
 
 export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
@@ -16,7 +11,7 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
 
   jwt.verify(token, process.env.TOKEN_SECRET || 'secret', (err, user) => {
     if (err) return res.status(403).json([{ message: 'Forbidden' }]);
-    req.payload = user;
+    req.payload = user as UserPayload;
     next();
   });
 };

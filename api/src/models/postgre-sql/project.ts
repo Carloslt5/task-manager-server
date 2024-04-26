@@ -1,16 +1,17 @@
 import { Pool, QueryResult } from 'pg';
 import { dbConfig } from '../../db';
 import { Project, ProjectID, ProjectNotID } from '../../interfaces/project.type';
+import { UserID } from '../../interfaces/user.type';
 
 const db = new Pool(dbConfig);
 
 class ProjectModel {
-  async findAll({ userID }: { userID: string }): Promise<QueryResult<Project[]>> {
+  async findAll({ id: userID }: UserID): Promise<QueryResult<Project[]>> {
     return db.query('SELECT * FROM project WHERE "ownerID" = $1', [userID]);
   }
 
-  async findByID(projectId: ProjectID): Promise<QueryResult<Project[]>> {
-    return db.query('SELECT * FROM project WHERE id = $1', [projectId]);
+  async findByID({ id: projectID }: ProjectID): Promise<QueryResult<Project[]>> {
+    return db.query('SELECT * FROM project WHERE id = $1', [projectID]);
   }
 
   async create({ title, description, ownerID }: ProjectNotID): Promise<QueryResult<Project[]>> {

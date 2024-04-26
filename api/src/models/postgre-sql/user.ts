@@ -2,8 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Pool, QueryResult } from 'pg';
 import { dbConfig } from '../../db';
-import { User, UserNotID } from '../../interfaces/user.type';
-import { UserPayload } from '../../middlewares/requireAuth';
+import { User, UserID, UserNotID, UserPayload } from '../../interfaces/user.type';
 
 const db = new Pool(dbConfig);
 
@@ -42,7 +41,8 @@ class UserModel {
     });
     return authToken;
   }
-  async checkOwnerForUser(userId: string, profileId: string): Promise<number> {
+
+  async checkOwnerForUser(userId: UserID, profileId: string): Promise<number> {
     const result = await db.query('SELECT COUNT(*) FROM client WHERE id = $1 OR id = $2', [userId, profileId]);
     return result.rows[0].count;
   }

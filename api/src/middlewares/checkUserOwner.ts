@@ -2,7 +2,7 @@ import { Request, type NextFunction, type Response } from 'express';
 import { usermodel } from '../models/postgre-sql/user';
 
 const checkUserOwner = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const userId = req.payload!.id;
+  const { id: userId } = req.payload;
   const { id: profileId } = req.params;
 
   if (typeof userId === 'string' && typeof profileId === 'string') {

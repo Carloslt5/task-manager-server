@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { HTTPError } from '../error-handling/HTTPError';
-import { UserNotID } from '../interfaces/user.type';
+import { type UserNotID } from '../interfaces/user.type';
 import { usermodel } from '../models/postgre-sql/user';
 
 export const signup: RequestHandler = async (req, res, next) => {
